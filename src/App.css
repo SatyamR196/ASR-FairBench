@@ -1,0 +1,23 @@
+@import 'primeicons/primeicons.css';
+@import 'primeflex/primeflex.css';
+
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0rem;
+  text-align: center;
+}
+html,body{
+  margin: 0;
+  padding: 0;
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
