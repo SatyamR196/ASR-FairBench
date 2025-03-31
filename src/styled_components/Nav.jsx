@@ -8,6 +8,8 @@ function Nav() {
         <Link to="/request">Check Fairness Score</Link>
         <Link to="/metrics">Metrics</Link>
         <Link to="/leaderboard">Leaderboard</Link>
+        <Link to="/dataset">Dataset</Link>
+        <Link to="/contact">Contact Us</Link>
     </NavBar>
   )
 }
@@ -16,7 +18,7 @@ const NavBar = styled.div`
     display: flex;
     justify-content: center;
     gap: 3rem;
-    margin-inline: 5rem;
+    margin-inline: auto;
     padding: 0.8rem;
     /* background: rgba(22, 52, 250, 0.2); */
     background-color: rgb(243, 245, 250);

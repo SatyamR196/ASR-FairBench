@@ -20,6 +20,8 @@ import { useContext } from "react";
 import { DataContext } from "./DataContext";
 import Logo from "./assets/main_LOGO2.png"
 import Metrics from "./components/Metrics";
+import Dataset from "./components/Dataset";
+import Contact from "./components/Contact";
 
 function App() {
   const toast = useRef(null);
@@ -58,6 +60,8 @@ The leaderboard currently focuses on English speech recognition, and will be exp
             <Route path="/request" element={<Request showSucess={showSucess} showError={showError} showInfo={showInfo} baseUrl={baseUrl}/>} />
             <Route path="/leaderboard" element={<Leaderboard baseUrl={baseUrl} />} />
             <Route path="/metrics" element={<Metrics/>} />
+            <Route path="/dataset" element={<Dataset/>} />
+            <Route path="/contact" element={<Contact/>} />
             <Route path="/*" element={<Navigate to="/leaderboard" />} />
           </Routes>
         </div>

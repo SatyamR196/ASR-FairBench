@@ -275,8 +275,7 @@ export function Request({ showSucess, showError, showInfo, baseUrl }) {
             {result && (
                 <>
                     <h3>
-                        {" "}
-                        ASR model <i>"{result.ASR_model}"</i> has been Evaluated {" "}
+                        {" "} <i>"{result.message}"</i>{" "}
                     </h3>
                     <GraphContainer>
                         <Head>Summary</Head>
