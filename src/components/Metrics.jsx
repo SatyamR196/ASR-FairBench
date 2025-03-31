@@ -11,38 +11,45 @@ function Metrics() {
   return (
     <Container>
         <h1>Metrics</h1>
-        <Gridbox>
-            <ScoreCard label="Audios in Dataset : " score={2648}></ScoreCard>
-            <ScoreCard label="Source : " score="Meta Dataset"></ScoreCard>
-            <ScoreCard label="Fairness Score : " score={11}></ScoreCard>
-            <ScoreCard label="Fairness Score : " score={11}></ScoreCard>
-        </Gridbox>
-        <br></br>
-        <br></br>
+        <Para mb={1}>
+        Here is the details of the metrics we have used in our leaderboard.
+        </Para>
         {/* <hr></hr> */}
-        <Head>Age Group by Gender Distribution</Head>
-        <Image src={AgeGroup}></Image>
+        <Head>1. Word Error Rate (WER)</Head>
+        <Para mb={1}>
+        WER measures the accuracy of ASR models by calculating the number of substitutions, deletions, and insertions compared to the reference transcript.
         <br></br>
+        <p><b>Formula:</b> WER = (S + D + I) / N</p>
+        <p>S - No. of substitutions</p>
+        <p>D - No. of deletions</p>
+        <p>I - No. of insertions</p>
+        <p>N - Total no. of transcribed words</p>
+        </Para>
         <hr></hr>
-        <br></br>
-        <Head>Socioeconomic Group by Gender Distribution</Head>
-        <Image src={SEGGroup}></Image>
-        <br></br>
-        <hr></hr>
-        <br></br>
-        <Head>Ethnicity Distribution</Head>
-        <Image src={EthGroup}></Image>
-        <br></br>
-        <hr></hr>
-        <br></br>
-        <Head>Frequenctly Used Words</Head>
-        <Image src={FAWGroup}></Image>
-        <br></br>
-        <hr></hr>
-        <br></br>
-        <Head>Cluster</Head>
-        <Image src={ClusterGroup}></Image>
 
+        <Head>2. Overall Fairness Score</Head>
+        <Para mb={1}>
+        We have applied the mixed effect poisson regression based approach to calculate the fairness score. We have made the attributes : gender, socioeconomic background, first language and ethnicity as the fixed effect group while labelling speaker as a random effect group.
+        <br></br>
+        <p>log(λ<sub>ij</sub>) = log(N<sub>ij</sub>) + µ<sub>f(i)</sub> + r<sub>i</sub> + θ<sup>T</sup>x<sub>ij</sub></p>
+        </Para>
+        <hr></hr>
+
+        <Head>3. Fairness Adjusted ASR Score (FAAS)</Head>
+        <Para mb={1}>
+        FAAS balances WER and fairness to evaluate ASR systems comprehensively. We have ranked the ASR models based on this metric.
+        <br></br>
+        <p><b>Formula:</b> FAAS = 10*log<sub>10</sub>(Overall_Fairness_Score/WER)</p>
+        </Para>
+        <hr></hr>
+
+        <Head>4. Real-Time Factor (RTFx)</Head>
+        <Para mb={1}>
+        RTFx evaluates the efficiency of an ASR model in processing speech. Thus it measures the latency of the ASR model.
+        <br></br>
+        <p><b>Formula:</b> RTFx = T<sub>process</sub>/T<sub>audio</sub></p>
+        </Para>
+        
     </Container>
   )
 }
@@ -76,4 +83,10 @@ const Head= styled.h6`
 const Image = styled.img`
     max-width: 75%;
     margin : auto
+`
+const Para = styled.div`
+color: #4b5563;
+font-size: 1.4rem;
+padding-top: 1rem;
+padding-bottom: ${props=>props.mb || 2}rem;
 `

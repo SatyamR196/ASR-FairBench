@@ -6,8 +6,8 @@ function Nav() {
     <NavBar class="nav-bar">
         <Link to="/home">Home</Link>
         <Link to="/request">Check Fairness Score</Link>
-        <Link to="/metrics">Metrics</Link>
         <Link to="/leaderboard">Leaderboard</Link>
+        <Link to="/metrics">Metrics</Link>
         <Link to="/dataset">Dataset</Link>
         <Link to="/contact">Contact Us</Link>
     </NavBar>
