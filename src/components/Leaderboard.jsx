@@ -16,6 +16,8 @@ export function Leaderboard({baseUrl}) {
 
   const [products, setProducts] = useState(null);
   const dt = useRef(null);
+  const {sharedData, setSharedData} = useContext(DataContext);
+
 
   let data = [
     { Model: "OpenAi/whisper", WER: 0.15, FS: 0.87, FS_G: 8.41, FS_L: 0.85, FS_SEG: 0.8, FS_E: 0.8 },
@@ -25,24 +27,32 @@ export function Leaderboard({baseUrl}) {
   // const {baseUrl} = useContext(DataContext) ;
   // console.log(baseUrl);
   useEffect(() => {
+    console.log("Outside if fxn",sharedData)
+    if(!(sharedData && sharedData.Leaderboard)){
+      console.log("inside if")
+      const fetchData = async () => {
+        const headers = {
+          'ngrok-skip-browser-warning': "10008"
+        };
+        const res = await axios.get(`${baseUrl}/fetch`, { headers });
+        console.log(baseUrl);
+        let Data = res.data.data; // Await the promise
+        const uniqueData = Data.filter((value, index, self) =>
+          index === self.findIndex((t) => t.Model === value.Model)
+        );
+        console.log(uniqueData)
+        setProducts(uniqueData); // Set the resolved data to state
+        setSharedData({...sharedData,Leaderboard: uniqueData})
+        console.log(sharedData)
+      }
+      
+      fetchData();
+    }else{
+      setProducts(sharedData.Leaderboard);
+    }
 
-    const fetchData = async () => {
-      const headers = {
-        'ngrok-skip-browser-warning': "10008"
-      };
-      const res = await axios.get(`${baseUrl}/fetch`, { headers });
-      console.log(baseUrl);
-      let Data = res.data.data; // Await the promise
-      const uniqueData = Data.filter((value, index, self) =>
-        index === self.findIndex((t) => t.Model === value.Model)
-      );
-      console.log(uniqueData)
-      setProducts(uniqueData); // Set the resolved data to state
-    };
 
-    fetchData();
-
-  }, []);
+  }, [sharedData,setSharedData,baseUrl]);
 
 
   const exportCSV = (selectionOnly) => {

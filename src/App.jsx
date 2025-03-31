@@ -8,6 +8,7 @@ import {
   Routes,
   Route,
   Navigate,
+  useLocation
 } from "react-router-dom";
 import { Home } from "./components/Home";
 import { Request } from "./components/Request";
@@ -25,8 +26,9 @@ import Contact from "./components/Contact";
 
 function App() {
   const toast = useRef(null);
-  const [baseUrl,setBaseUrl] = useState("https://970a-34-125-147-165.ngrok-free.app") 
+  const [baseUrl,setBaseUrl] = useState("https://d471-34-75-105-227.ngrok-free.app") 
   console.log(baseUrl);
+  const location = useLocation();
   // const {setBaseUrl} = useContext(DataContext) ;
   // // ✅ Set `baseUrl` inside `useEffect`
   // useEffect(() => {
@@ -50,9 +52,9 @@ function App() {
           <img src={Logo}></img>
         </HeadImg>
         <Text>📐 The 🤗 Open ASR Leaderboard ranks and evaluates speech recognition models on the Hugging Face Hub.
-We report the Average WER (⬇️ lower the better) and RTFx (⬆️ higher the better). Models are ranked based on their Average WER, from lowest to highest. Check the 📈 Metrics tab to understand how the models are evaluated.
-If you want results for a model that is not listed here, you can submit a request for it to be included ✉️✨.
-The leaderboard currently focuses on English speech recognition, and will be expanded to multilingual evaluation in later versions.</Text>
+              We report the Average WER (⬇️ lower the better) and RTFx (⬆️ higher the better). Models are ranked based on their Average WER, from lowest to highest. Check the 📈 Metrics tab to understand how the models are evaluated.
+              If you want results for a model that is not listed here, you can submit a request for it to be included ✉️✨.
+              The leaderboard currently focuses on English speech recognition, and will be expanded to multilingual evaluation in later versions.</Text>
         <div className="container">
           <Nav />
           <Routes>
