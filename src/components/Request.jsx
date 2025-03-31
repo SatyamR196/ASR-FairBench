@@ -272,11 +272,9 @@ export function Request({ showSucess, showError, showInfo, baseUrl }) {
             )}
 
             {/* <WER_GenderChart></WER_GenderChart> */}
-            {result && (
+            {result.message && <h3>{" "} <i><u>{result.message}</u></i>{" "}</h3>}
+            {result.ASR_model && (
                 <>
-                    <h3>
-                        {" "} <i>"{result.message}"</i>{" "}
-                    </h3>
                     <GraphContainer>
                         <Head>Summary</Head>
                         <Summary_Chart>

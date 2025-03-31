@@ -11,7 +11,7 @@ function Contact() {
         <Ldiv>
             <ScoreCard width="38vw" direction="column" label="Prof. Animesh Mukherjee :" score="animeshm@cse.iitkgp.ac.in"></ScoreCard>
             <ScoreCard width="38vw" direction="column" label="Anand Rai :" score="raianand.1991@gmail.com"></ScoreCard>
-            <ScoreCard width="38vw" direction="column" label="Utkarsh :" score="  "></ScoreCard>
+            <ScoreCard width="38vw" direction="column" label="Utkarsh Anand :" score="ua28012006@gmail.com"></ScoreCard>
             <ScoreCard width="38vw" direction="column" fontSize={1.3} label="Satyam R :" score="satyamrahangdale196@kgpian.iitkgp.ac.in"></ScoreCard>
         </Ldiv>
         <Rdiv>

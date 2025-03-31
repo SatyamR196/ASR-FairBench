@@ -25,7 +25,7 @@ import Contact from "./components/Contact";
 
 function App() {
   const toast = useRef(null);
-  const [baseUrl,setBaseUrl] = useState("https://d6e1-34-70-225-145.ngrok-free.app") 
+  const [baseUrl,setBaseUrl] = useState("https://970a-34-125-147-165.ngrok-free.app") 
   console.log(baseUrl);
   // const {setBaseUrl} = useContext(DataContext) ;
   // // ✅ Set `baseUrl` inside `useEffect`
@@ -77,7 +77,8 @@ const HeadImg = styled.div`
   }
 `
 const Text = styled.p`
-  color: gray;
+  /* color: gray; */
+  color: #4b5563; 
   padding-inline: 5rem;
   margin-top:0;
   margin-bottom:0;

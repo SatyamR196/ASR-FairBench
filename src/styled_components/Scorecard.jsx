@@ -43,7 +43,8 @@ const Icon = styled(CircleCheckBig)`
 `;
 
 const ScoreCard = ({ label, score, width, direction, fontSize }) => {
-  if(typeof(score)===Number) score = Math.round(score * 100) / 100;
+  // console.log(label,typeof(score))
+  if(typeof(score)=="number") score = Math.round(score * 100) / 100;
   return (
     <Card width={width} direction={direction} >
       <Label>{label}</Label>
