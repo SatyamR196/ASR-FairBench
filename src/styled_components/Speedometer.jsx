@@ -17,11 +17,11 @@ const CustomSpeedometer = ({value,w}) => {
                 "rgb(106, 215, 45)",        // Very Good
             ]}
             customSegmentLabels={[
-                { text: "Very Bad", position: "INSIDE", color: "black" },
-                { text: "Bad", position: "INSIDE", color: "black" },
-                { text: "Ok", position: "INSIDE", color: "black" },
-                { text: "Good", position: "INSIDE", color: "black" },
-                { text: "Very Good", position: "INSIDE", color: "black" },
+                { text: "Highly Biased", position: "INSIDE", color: "black" },
+                { text: "Biased", position: "INSIDE", color: "black" },
+                { text: "Borderline Fiar", position: "INSIDE", color: "black" },
+                { text: "Fair", position: "INSIDE", color: "black" },
+                { text: "Highly Fair", position: "INSIDE", color: "black" },
             ]}
             textColor="#606060" // Light gray text color
             ringWidth={50} // Adjust the thickness of the gauge
