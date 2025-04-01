@@ -123,10 +123,15 @@ export function Request({ showSucess, showError, showInfo, baseUrl }) {
         if(sharedData && sharedData.Category_FS){
             setCategory_FS(sharedData.Category_FS);
         }
-        if (result) {
-            
+        if (result && result["Adjusted Category Fairness Score"]) {
+            setCategory_FS([
+                { category: "Gender", FS: result["Adjusted Category Fairness Score"]["gender"] },
+                { category: "Language", FS: result["Adjusted Category Fairness Score"]["first_language"] },
+                { category: "Ethnicity", FS: result["Adjusted Category Fairness Score"]["ethnicity"] },
+                { category: "Socioeconomic BG", FS: result["Adjusted Category Fairness Score"]["socioeconomic_bkgd"] }
+            ]);
         }
-    }, []);
+    }, [result]);
 
     const headers = {
         'ngrok-skip-browser-warning': "10008"
