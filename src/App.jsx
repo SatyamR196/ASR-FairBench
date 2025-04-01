@@ -19,7 +19,7 @@ import { Toast } from "primereact/toast";
 import { React, useRef, useEffect } from "react";
 import { useContext } from "react";
 import { DataContext } from "./DataContext";
-import Logo from "./assets/main_LOGO2.png"
+import Logo from "./assets/logo.png"
 import Metrics from "./components/Metrics";
 import Dataset from "./components/Dataset";
 import Contact from "./components/Contact";
@@ -51,10 +51,16 @@ function App() {
         <HeadImg>
           <img src={Logo}></img>
         </HeadImg>
-        <Text>📐 The 🤗 Open ASR Leaderboard ranks and evaluates speech recognition models on the Hugging Face Hub.
-              We report the Average WER (⬇️ lower the better) and RTFx (⬆️ higher the better). Models are ranked based on their Average WER, from lowest to highest. Check the 📈 Metrics tab to understand how the models are evaluated.
-              If you want results for a model that is not listed here, you can submit a request for it to be included ✉️✨.
-              The leaderboard currently focuses on English speech recognition, and will be expanded to multilingual evaluation in later versions.</Text>
+        <Text>
+        🎙️ <b>ASR-FAIRBENCH</b> is an open benchmarking platform dedicated to evaluating the <b>fairness and accuracy</b> of Automatic Speech Recognition (ASR) models.
+        Our mission is to assess ASR models' performance across diverse demographic groups using the <b><a href="https://ai.meta.com/datasets/speech-fairness-dataset/" target="_blank">Fair Speech Dataset</a></b>.
+        
+        Models are ranked based on the <b>Fairness Adjusted Accuracy Score (FAAS)</b>, which integrates both <b>Word Error Rate (WER)</b> and a <b>Fairness Score</b>, ensuring that models deliver equitable performance across different accents, genders, and age groups.
+        
+        Explore the 📈 <b>Metrics</b> tab for details on our evaluation process and visit the 📂 <b>Dataset</b> tab for a summary of the Fair Speech Dataset.
+        
+        Think your ASR model is both inclusive and high-performing? Put it to the test and claim your spot on the leaderboard! ✨
+      </Text>
         <div className="container">
           <Nav />
           <Routes>
@@ -73,10 +79,16 @@ function App() {
 }
 
 const HeadImg = styled.div`
-  img{
-    width: 100%;
-    height: 220px;
-  }
+display: flex;
+justify-content: center; // Centers the image horizontally
+align-items: center; // Aligns image vertically
+width: 100%;
+margin: 1rem 0;
+
+img {
+  max-width: 300px; // Adjust size as needed
+  height: auto; // Maintain aspect ratio
+}
 `
 const Text = styled.p`
   /* color: gray; */
@@ -94,9 +106,9 @@ const Wrapper = styled.div`
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+  justify-content: left;
+  align-items: left;
+  text-align: left;
   font-family: Arial, sans-serif;
 
   .container {

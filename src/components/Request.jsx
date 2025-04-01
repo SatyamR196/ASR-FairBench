@@ -154,27 +154,54 @@ export function Request({ showSucess, showError, showInfo, baseUrl }) {
 
     return (
         <>
-            <h1>Check Fairness Score</h1>
-            {/* <Button onClick={sendReq}>Send API REQ</Button> */}
+            <h2>Check ASR Model Fairness Score</h2>
+            
+            {/* Information panel to help users understand the requirements */}
+            <InfoPanel>
+                <h4>How the Fairness Audit Works:</h4>
+                <ol>
+                    <li>Enter a Hugging Face ASR model ID (e.g., <ModelExample>facebook/wav2vec2-base-960h</ModelExample>)</li>
+                    <li>Our system will run inference using a 10% stratified sample from Meta's FairSpeech dataset</li>
+                    <li>Results will show performance differences across demographic groups including gender, language, ethnicity, and socioeconomic background</li>
+                </ol>
+                <Tip>
+                    <i className="pi pi-info-circle"></i> The audit may take up to 10 minutes to complete depending on the model size
+                </Tip>
+            </InfoPanel>
+            
             <form onSubmit={handleSubmit(onSubmit)}>
-                {/* include validation with required or other standard HTML validation rules */}
-                {/* <input placeholder="Enter Model Path URL" {...register("ASR_model", { required: true })} /> */}
-                <InputText
-                    placeholder="Enter model name from HuggingFace"
-                    variant="filled"
-                    id="username"
-                    {...register("ASR_model", { required: true })}
-                    value={value}
-                    onChange={(e) => setValue(e.target.value)}
-                />
-                {/* errors will return when field validation fails  */}
-                {errors.exampleRequired && <span>This field is required</span>}
-                <br></br>
+            <FormGroup>
+    <label htmlFor="username">Hugging Face Model ID:</label>
+    <ModelInputWrapper>
+        {/* <ModelPrefix>huggingface.co/</ModelPrefix> */}
+        <InputText
+            placeholder="Example: facebook/wav2vec2-base-960h"
+            variant="filled"
+            id="username"
+            {...register("ASR_model", { 
+                required: "Please enter a valid model path" 
+            })}
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+        />
+    </ModelInputWrapper>
+    {errors.ASR_model && <ErrorMessage>{errors.ASR_model.message}</ErrorMessage>}
+</FormGroup>
+
+
+                
+                <ExampleModels>
+                    <span>Try these examples: </span>
+                    <ExampleButton onClick={() => setValue("facebook/wav2vec2-base-960h")}>wav2vec2</ExampleButton>
+                    <ExampleButton onClick={() => setValue("openai/whisper-small")}>whisper-small</ExampleButton>
+                    <ExampleButton onClick={() => setValue("microsoft/wavlm-base")}>wavlm-base</ExampleButton>
+                </ExampleModels>
+                
                 <Button type="submit" shadow="blue" bg="#3b82f6" color="white">
                     Run Fairness Audit
                 </Button>
-                {/* <Button type="submit" shadow="green" bg="hsl(90.48deg 100% 75.29%)" color="hsl(120deg 100% 24%)">Run Fairness Audit</Button> */}
             </form>
+            
             {isRunning ? (<>
                 <br></br>
                 <ProgressBar
@@ -238,118 +265,8 @@ export function Request({ showSucess, showError, showInfo, baseUrl }) {
                             <BoxPlot werData={result.wer_SEG} title="Socioeconomic Background"></BoxPlot>
                         </Box_chartV>
                         <br></br>
-                        {/* <hr></hr> */}
-                        {/* <hr></hr> */}
-                        {/* <Gender_Chart>
-                            <WER_GenderChart
-                                graphData={graphData.Gender_WER}
-                                title="WER (Gender)"
-                                labelY="WER"
-                                xAxis="gender"
-                                yAxis="WER"
-                                angle={-45}
-                                bMargin={25}
-                                height="300px"
-                                colorStroke='hsl(30, 83%, 47%)'
-                                colorFill='hsla(30, 100%, 48%, 0.461)'
-                            />
-                            <WER_GenderChart
-                                graphData={graphData.Gender_FS}
-                                title="Fairness Score (Gender)"
-                                labelY="Fairness Score"
-                                xAxis="gender"
-                                yAxis="FS"
-                                angle={-45}
-                                bMargin={25}
-                                height="300px"
-                                colorStroke='hsl(30, 83%, 47%)'
-                                colorFill='hsla(30, 100%, 48%, 0.461)'
-                            />
-                        </Gender_Chart>
-                        <hr></hr>
-                        <Lang_Chart>
-                            <WER_GenderChart
-                                graphData={graphData.Language_WER}
-                                title="WER (Language)"
-                                labelY="WER"
-                                xAxis="language"
-                                yAxis="WER"
-                                angle={-45}
-                                bMargin={80}
-                                height="400px"
-                                colorStroke='rgb(2, 167, 5)'
-                                colorFill='rgba(24, 219, 27, 0.447)'
-                            />
-                            <WER_GenderChart
-                                graphData={graphData.Language_FS}
-                                title="Fairness Score (Language)"
-                                labelY="Fairness Score"
-                                xAxis="language"
-                                yAxis="FS"
-                                angle={-45}
-                                bMargin={80}
-                                height="400px"
-                                colorStroke='rgb(2, 167, 5)'
-                                colorFill='rgba(24, 219, 27, 0.447)'
-                            />
-                        </Lang_Chart>
-                        <hr></hr>
-                        <SEB_Chart>
-                            <WER_GenderChart
-                                graphData={graphData.SEB_WER}
-                                title="WER (Socioeconomic Background)"
-                                labelY="WER"
-                                xAxis="SEB"
-                                yAxis="WER"
-                                angle={-45}
-                                bMargin={40}
-                                height="400px"
-                                colorStroke='rgb(0, 74, 163)'
-                                colorFill='rgba(33, 124, 236, 0.584)'
-                            />
-                            <WER_GenderChart
-                                graphData={graphData.SEB_FS}
-                                title="Fairness Score (Socioeconomic Background)"
-                                labelY="Fairness Score"
-                                xAxis="SEB"
-                                yAxis="FS"
-                                angle={-45}
-                                bMargin={40}
-                                height="400px"
-                                colorStroke='rgb(0, 74, 163)'
-                                colorFill='rgba(33, 124, 236, 0.584)'
-                            />
-                        </SEB_Chart>
-                        <hr></hr>
-                        <Ethnicity_Chart>
-                            <WER_GenderChart
-                                graphData={graphData.Ethnicity_WER}
-                                title="WER (Ethnicity)"
-                                labelY="WER"
-                                xAxis="ethnicity"
-                                yAxis="WER"
-                                angle={-45}
-                                bMargin={180}
-                                height="500px"
-                                colorStroke='rgb(163, 0, 171)'
-                                colorFill='rgba(202, 36, 252, 0.47)'
-                            />
-                            <WER_GenderChart
-                                graphData={graphData.Ethnicity_FS}
-                                title="Fairness Score (Ethnicity)"
-                                labelY="Fairness Score"
-                                xAxis="ethnicity"
-                                yAxis="FS"
-                                angle={-45}
-                                bMargin={180}
-                                height="500px"
-                                colorStroke='rgb(163, 0, 171)'
-                                colorFill='rgba(202, 36, 252, 0.47)'
-                            />
-                        </Ethnicity_Chart> */}
-
+                        {/* Rest of the existing graph code remains unchanged */}
                     </GraphContainer>
-                    {/* <Button onClick={publishResult}>Publish to Leaderboard</Button> */}
                     <Button onClick={publishResult} shadow="blue" bg="#3b82f6" color="white">
                         Publish to Leaderboard
                     </Button>
@@ -360,6 +277,112 @@ export function Request({ showSucess, showError, showInfo, baseUrl }) {
     );
 }
 
+// New styled components for the form 
+const InfoPanel = styled.div`
+    background-color: #f0f7ff;
+    border-left: 4px solid #3b82f6;
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+    border-radius: 0.25rem;
+    
+    h4 {
+        margin-top: 0;
+        margin-bottom: 0.75rem;
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+    
+    ol {
+        margin-left: 1.5rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    li {
+        margin-bottom: 0.5rem;
+    }
+`;
+
+const Tip = styled.p`
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    color: #3b82f6;
+    font-style: italic;
+    
+    i {
+        margin-right: 0.5rem;
+    }
+`;
+
+const ModelExample = styled.code`
+    background: rgba(0,0,0,0.05);
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    font-family: monospace;
+    font-size: 0.9em;
+`;
+
+const FormGroup = styled.div`
+    margin-bottom: 1rem;
+    
+    label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        align-items: center; 
+        justify-content: center;
+    }
+`;
+
+const ModelInputWrapper = styled.div`
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.75rem;
+`;
+
+const ModelPrefix = styled.div`
+    background-color: #f3f4f6;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid #d1d5db;
+    border-right: none;
+    border-radius: 0.25rem 0 0 0.25rem;
+    color: #6b7280;
+    font-family: monospace;
+`;
+
+const ErrorMessage = styled.div`
+    color: #ef4444;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+`;
+
+const ExampleModels = styled.div`
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    
+    span {
+        color: #6b7280;
+        font-size: 0.875rem;
+    }
+`;
+
+const ExampleButton = styled.button`
+    background: none;
+    border: 1px solid #d1d5db;
+    border-radius: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    cursor: pointer;
+    color: #374151;
+    
+    &:hover {
+        background-color: #f3f4f6;
+    }
+`;
+
+// Keep all original styled components
 const Head= styled.h6`
     font-size:2rem;
     color: #3b82f6;
