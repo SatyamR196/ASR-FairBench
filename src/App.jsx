@@ -26,7 +26,7 @@ import Contact from "./components/Contact";
 
 function App() {
   const toast = useRef(null);
-  const [baseUrl,setBaseUrl] = useState("https://beb0-104-199-242-149.ngrok-free.app") 
+  const [baseUrl,setBaseUrl] = useState("https://c370-34-125-206-64.ngrok-free.app") 
   console.log(baseUrl);
   const location = useLocation();
   // const {setBaseUrl} = useContext(DataContext) ;
