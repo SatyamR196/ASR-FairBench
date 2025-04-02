@@ -282,7 +282,7 @@ export function Request({ showSucess, showError, showInfo, baseUrl }) {
 
                 <ExampleModels>
                     <span>Try these examples: </span>
-                    <ExampleButton
+                    <ExampleButton type="button"
                         onClick={() => {
                             setValue("facebook/wav2vec2-base-960h", { shouldValidate: true });
                             clearErrors("ASR_model"); // Clears the error message
@@ -290,16 +290,16 @@ export function Request({ showSucess, showError, showInfo, baseUrl }) {
                     >
                         wav2vec2
                     </ExampleButton>
-                    <ExampleButton onClick={() => {
-                            setValue("openai/whisper-small");
-                            trigger("ASR_model"); // Manually trigger validation
+                    <ExampleButton type="button" onClick={() => {
+                        setValue("openai/whisper-small", { shouldValidate: true });
+                        clearErrors("ASR_model");
                     }}>
                         whisper-small
                     </ExampleButton>
-                    <ExampleButton onClick={() => {
-                            setValue("openai/whisper-medium");
-                            trigger("ASR_model"); // Manually trigger validation
-                        }}>
+                    <ExampleButton type="button" onClick={() => {
+                        setValue("openai/whisper-medium", { shouldValidate: true });
+                        clearErrors("ASR_model");
+                    }}>
                         whisper-medium
                     </ExampleButton>
                 </ExampleModels>
