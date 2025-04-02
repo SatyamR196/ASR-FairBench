@@ -4,6 +4,7 @@ import AgeGroup from '../assets/Age_group.png'
 import SEGGroup from '../assets/SEG_group.png'
 import EthGroup from '../assets/Ethnicity.png'
 import FAWGroup from '../assets/FAW.png'
+import Dateset from '../assets/Dataset_tableHQ.png'
 import ClusterGroup from '../assets/Cluster.png'
 import ScoreCard from '../styled_components/Scorecard'
 import { Button } from 'primereact/button';
@@ -38,6 +39,7 @@ function Dataset() {
         <Para mb={1}>
           For our leaderboard evaluations, we employ stratified sampling to select a representative 10% subset from the FairSpeech dataset. Stratified sampling is critical in Automatic Speech Recognition (ASR) fairness testing to ensure that test sets reflect the overall dataset's distribution. This approach ensures demographic factors, background noise conditions, and linguistic diversity are properly represented, allowing us to evaluate model robustness and fairness across varied populations.
         </Para>
+        <Image src={Dateset} />
       </Section>
 
       <Section>

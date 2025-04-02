@@ -100,6 +100,8 @@ export function Request({ showSucess, showError, showInfo, baseUrl }) {
         register,
         handleSubmit,
         formState: { errors },
+        clearErrors,
+        trigger
     } = useForm();
     const onSubmit = async (data) => {
         // alert(JSON.stringify(data));
@@ -281,15 +283,24 @@ export function Request({ showSucess, showError, showInfo, baseUrl }) {
                 <ExampleModels>
                     <span>Try these examples: </span>
                     <ExampleButton
-                        onClick={() => setValue("facebook/wav2vec2-base-960h")}
+                        onClick={() => {
+                            setValue("facebook/wav2vec2-base-960h", { shouldValidate: true });
+                            clearErrors("ASR_model"); // Clears the error message
+                        }}
                     >
                         wav2vec2
                     </ExampleButton>
-                    <ExampleButton onClick={() => setValue("openai/whisper-small")}>
+                    <ExampleButton onClick={() => {
+                            setValue("openai/whisper-small");
+                            trigger("ASR_model"); // Manually trigger validation
+                    }}>
                         whisper-small
                     </ExampleButton>
-                    <ExampleButton onClick={() => setValue("microsoft/wavlm-base")}>
-                        wavlm-base
+                    <ExampleButton onClick={() => {
+                            setValue("openai/whisper-medium");
+                            trigger("ASR_model"); // Manually trigger validation
+                        }}>
+                        whisper-medium
                     </ExampleButton>
                 </ExampleModels>
 

@@ -4,7 +4,7 @@ import { Link,useLocation} from "react-router-dom";
 function Nav() {
   const location = useLocation();
   return (
-    <NavBar class="nav-bar">
+    <NavBar className="nav-bar">
       <NavLink to="/home" $active={location.pathname === "/home"}>Home</NavLink>
       <NavLink to="/request" $active={location.pathname === "/request"}>Submit Model</NavLink>
       {/* <NavLink to="/leaderboard" $active={location.pathname === "/leaderboard"}>Leaderboard</NavLink> */}
