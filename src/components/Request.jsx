@@ -1,8 +1,9 @@
-import { React, useState, useRef, useEffect } from "react";
+import { React, useState, useRef, useEffect,forwardRef } from "react";
 import { useForm } from "react-hook-form";
+import { useReactToPrint } from "react-to-print";
 import styled from "styled-components";
-import Button from "../styled_components/Button";
 import axios from "axios";
+import Button from "../styled_components/Button";
 import { ProgressBar } from "primereact/progressbar";
 import "primereact/resources/themes/lara-light-cyan/theme.css";
 import Nav from "../styled_components/Nav";
@@ -17,12 +18,32 @@ import { Toast } from "primereact/toast";
 import { ScrollTop } from "primereact/scrolltop";
 import ScoreCard from "../styled_components/Scorecard";
 
+// Printable component (NO forwardRef needed)
+const PrintableComponent = () => {
+    return (
+      <div style={{ padding: "20px", backgroundColor: "white" }}>
+        <h1>Printable Content</h1>
+        <p>This content will be printed.</p>
+      </div>
+    );
+  };
+
 export function Request({ showSucess, showError, showInfo, baseUrl }) {
     let [result, setResult] = useState(false);
     let [isRunning, setIsRunning] = useState(false);
     let [category_FS, setCategory_FS] = useState([]);
     let [value, setValue] = useState("");
     const { sharedData, setSharedData } = useContext(DataContext);
+    
+    const componentRef = useRef(null);
+    const contentRef = useRef(null);
+    const reactToPrintFn = useReactToPrint({ contentRef });
+
+    const handlePrint = useReactToPrint({
+        content: () => componentRef.current, // Ensure this correctly returns a DOM element
+        documentTitle: "My Printed Page",
+      });
+    
     // How this result should look like :
 
     const [isUpdated, setIsUpdated] = useState(false);
@@ -199,7 +220,7 @@ export function Request({ showSucess, showError, showInfo, baseUrl }) {
     };
 
     // let category_FS =
-    console.log("TEST TEST", category_FS);
+    console.log("Category FS = ", category_FS);
     // Gender_WER: [
     //     { gender: "Female", WER: 0.21 },
     //     { gender: "Male", WER: 3.4 },
@@ -209,7 +230,10 @@ export function Request({ showSucess, showError, showInfo, baseUrl }) {
     return (
         <>
             <h2>Check ASR Model Fairness Score</h2>
-
+            {/* <div>
+                <button onClick={() => reactToPrintFn()}>Print</button>
+                <div ref={contentRef}><PrintableComponent /></div>
+            </div> */}
             {/* Information panel to help users understand the requirements */}
             <InfoPanel>
                 <h4>How the Fairness Audit Works:</h4>
@@ -321,23 +345,27 @@ export function Request({ showSucess, showError, showInfo, baseUrl }) {
                         </Summary_Chart>
                         <hr></hr>
                         <Combo_Chart>
-                            <div>
+                            <ComboDivG>
                                 <Head>Gender</Head>
+                                <br></br>
                                 <Box_chartV>
                                     {/* <Speedometer value={result["Adjusted Category Fairness Score"]["gender"]}></Speedometer> */}
                                     <ScoreCard
                                         label="Fairness Score : "
+                                        width={"100%"}
                                         score={result["Adjusted Category Fairness Score"]["gender"]}
                                     ></ScoreCard>
                                     <BoxPlot werData={result.wer_Gender} title="Gender"></BoxPlot>
                                 </Box_chartV>
-                            </div>
-                            <div>
+                            </ComboDivG>
+                            <ComboDivS>
                                 <Head>Socioeconomic Background</Head>
+                                <br></br>
                                 <Box_chartV>
                                     {/* <Speedometer value={result["Adjusted Category Fairness Score"]["socioeconomic_bkgd"]}></Speedometer> */}
                                     <ScoreCard
                                         label="Fairness Score : "
+                                        width={"100%"}
                                         score={
                                             result["Adjusted Category Fairness Score"][
                                             "socioeconomic_bkgd"
@@ -349,7 +377,7 @@ export function Request({ showSucess, showError, showInfo, baseUrl }) {
                                         title="Socioeconomic Background"
                                     ></BoxPlot>
                                 </Box_chartV>
-                            </div>
+                            </ComboDivS>
                         </Combo_Chart>
                         <hr></hr>
                         <Head>Language</Head>
@@ -357,6 +385,7 @@ export function Request({ showSucess, showError, showInfo, baseUrl }) {
                             {/* <Speedometer value={result["Adjusted Category Fairness Score"]["first_language"]}></Speedometer> */}
                             <ScoreCard
                                 label="Fairness Score : "
+                                width={"100%"}
                                 score={
                                     result["Adjusted Category Fairness Score"]["first_language"]
                                 }
@@ -373,6 +402,7 @@ export function Request({ showSucess, showError, showInfo, baseUrl }) {
                             {/* <Speedometer value={result["Adjusted Category Fairness Score"]["ethnicity"]}></Speedometer> */}
                             <ScoreCard
                                 label="Fairness Score : "
+                                width={"100%"}
                                 score={result["Adjusted Category Fairness Score"]["ethnicity"]}
                             ></ScoreCard>
                             <BoxPlot
@@ -507,7 +537,7 @@ const ExampleButton = styled.button`
 `;
 
 // Keep all original styled components
-const Head = styled.h6`
+export const Head = styled.h6`
   font-size: 2rem;
   color: #3b82f6;
   margin-block: 0;
@@ -520,9 +550,16 @@ const GraphContainer = styled.div`
   gap: 2.5rem;
 `;
 
+const ComboDivG = styled.div`
+  flex-grow: 1;
+`;
+const ComboDivS = styled.div`
+  flex-grow: 1.5;
+`;
+
 const Combo_Chart = styled.div`
   display: flex;
-  /* gap: 2rem; */
+  gap: 2rem;
   justify-content: space-between;
 `;
 
@@ -540,7 +577,7 @@ const Summary_Chart = styled.div`
 const Box_chartV = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  /* gap: 2rem; */
   min-height: 60vh;
   /* width: 800px; */
   justify-content: space-between;

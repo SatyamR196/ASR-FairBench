@@ -64,7 +64,7 @@ function App() {
         <div className="container">
           <Nav />
           <Routes>
-            <Route path="/home" element={<Home />} />
+            <Route path="/home" element={<Home baseUrl={baseUrl}/>} />
             <Route path="/request" element={<Request showSucess={showSucess} showError={showError} showInfo={showInfo} baseUrl={baseUrl}/>} />
             <Route path="/leaderboard" element={<Leaderboard baseUrl={baseUrl} />} />
             <Route path="/metrics" element={<Metrics/>} />

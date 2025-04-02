@@ -28,6 +28,7 @@
     "react-hook-form": "^7.54.2",
     "react-plotly.js": "^2.6.0",
     "react-router-dom": "^7.4.0",
+    "react-to-print": "^3.0.5",
     "recharts": "^2.15.1",
     "styled-components": "^6.1.16"
   },

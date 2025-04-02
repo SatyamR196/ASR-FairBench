@@ -10,7 +10,7 @@ import axios from "axios";
 import { useContext } from "react";
 import { DataContext } from "../DataContext";
 import { ProgressSpinner } from 'primereact/progressspinner';
-        
+import styled from 'styled-components';
 
 export function Leaderboard({baseUrl}) {
 
@@ -114,8 +114,9 @@ export function Leaderboard({baseUrl}) {
   );
 
   return (<>
-    <h1>Leaderboard</h1>
-    <h3>Track Top performing models</h3>
+    {/* <h1>Leaderboard</h1> */}
+    {/* <h3>Track Top performing models</h3> */}
+    <H3>Leaderboard of the ASR models audited on this platform :</H3>
     {products ? (<div className="card border-round-3xl overflow-hidden shadow-2">
       <Tooltip target=".export-buttons>button" position="bottom" />
       <DataTable ref={dt} header={header} value={products} removableSort showGridlines sortField="FAAS" sortOrder={-1} tableStyle={{ minWidth: '20rem' }}>
@@ -138,4 +139,7 @@ export function Leaderboard({baseUrl}) {
   </>)
 }
 
+const H3 = styled.h3`
+  color: #515458 !important
+`
 
