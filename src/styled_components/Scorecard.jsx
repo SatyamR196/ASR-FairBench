@@ -20,6 +20,7 @@ const Card = styled.div`
 const Label = styled.span`
   color: #4b5563;
   font-size: 1.4rem;
+  font-weight: ${props => props.fontWeight || 500};
 `;
 
 const ScoreWrapper = styled.div`
@@ -42,12 +43,12 @@ const Icon = styled(CircleCheckBig)`
   cursor: pointer;
 `;
 
-const ScoreCard = ({ label, score, width, direction, fontSize }) => {
+const ScoreCard = ({ label, score, width, direction, fontSize,fontWeight }) => {
   // console.log(label,typeof(score))
   if(typeof(score)=="number") score = Math.round(score * 100) / 100;
   return (
     <Card width={width} direction={direction} >
-      <Label>{label}</Label>
+      <Label fontWeight={fontWeight}>{label}</Label>
       <ScoreWrapper>
         <Score fontSize={fontSize}>{score}</Score>
         <Icon />

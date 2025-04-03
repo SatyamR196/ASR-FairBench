@@ -284,27 +284,24 @@ export function Request({ showSucess, showError, showInfo, baseUrl }) {
                     <span>Try these examples: </span>
                     <ExampleButton type="button"
                         onClick={() => {
-                            setValue("facebook/wav2vec2-base-960h", { shouldValidate: true });
-                            clearErrors("ASR_model"); // Clears the error message
+                            setValue("facebook/wav2vec2-base-960h", { shouldValidate: true, shouldDirty: true });
                         }}
                     >
                         wav2vec2
                     </ExampleButton>
                     <ExampleButton type="button" onClick={() => {
                         setValue("openai/whisper-small", { shouldValidate: true });
-                        clearErrors("ASR_model");
                     }}>
                         whisper-small
                     </ExampleButton>
                     <ExampleButton type="button" onClick={() => {
                         setValue("openai/whisper-medium", { shouldValidate: true });
-                        clearErrors("ASR_model");
                     }}>
                         whisper-medium
                     </ExampleButton>
                 </ExampleModels>
 
-                <Button type="submit" shadow="blue" bg="#3b82f6" color="white">
+                <Button type="submit" shadow="blue" bg="#3b82f6" color="white" >
                     Run Fairness Audit
                 </Button>
             </form>
@@ -340,9 +337,10 @@ export function Request({ showSucess, showError, showInfo, baseUrl }) {
                         <Summary_wrap>
                             <div>
                             <ScoreCard
-                                label="FAAS : "
+                                label="Fairness-Adjusted ASR Score (FAAS) : "
                                 width={"100%"}
                                 score={result["FAAS"]}
+                                fontWeight={700}
                             ></ScoreCard>
                             </div>
                             <Summary_Chart>

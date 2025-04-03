@@ -19,7 +19,7 @@ const CustomSpeedometer = ({value,w}) => {
             customSegmentLabels={[
                 { text: "Highly Biased", position: "INSIDE", color: "black" },
                 { text: "Biased", position: "INSIDE", color: "black" },
-                { text: "Borderline Fiar", position: "INSIDE", color: "black" },
+                { text: "Borderline Fair", position: "INSIDE", color: "black" },
                 { text: "Fair", position: "INSIDE", color: "black" },
                 { text: "Highly Fair", position: "INSIDE", color: "black" },
             ]}
