@@ -1,12 +1,20 @@
 # ASR LEADERBOARD
 ![](/public/Github_logo.png)
 
+## Screenshots
+![](/public/Req_home.png)
+![](/public/Req_result.png)
+![](/public/Req_result2.png)
+![](/public/Req_result3.png)
+![](/public/LBoard.png)
+![](/public/Dataset.png)
+
 
 ### Features
 
 - **Intuitive UI** – A simple, clean, and visually appealing interface
 - **Fast Model Auditing** – Submit a model and get audited within minutes.
-- **Graphical Insight**s – Results are visualized using box plots and histograms.
+- **Graphical Insight**s – Results are visualized using box plots and histograms, which can be exported as PDF. [📄Download Result PDF](public/Print_Results.pdf)
 - **Leaderboard Publishing** – Publish audited results to a dynamic leaderboard.
 - **Advanced Leaderboard Features** – Filter by model name, sort by any column, and export data as CSV or PDF.
 - **Optimized Frontend Performance** – Configured the React.js frontend to improve initial load time by 30–50%.
@@ -47,6 +55,11 @@ Example :
 
 
 ## Run Locally
+####  <u>Prerequisites</u> :
+- **Node.js**: Make sure you have Node.js v22.12.0 or higher installed on your machine. You can download it from [Node.js official website](https://nodejs.org/).
+- **Google Colab**: You will need a Google account to access Google Colab.
+- **Ngrok**: Sign up for a free account on [ngrok](https://ngrok.com/) to expose your local server to the internet.
+
 ###  <u>Frontend</u> :
 
 Clone the project from GitHub to your local machine.
