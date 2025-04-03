@@ -337,23 +337,32 @@ export function Request({ showSucess, showError, showInfo, baseUrl }) {
                 <>
                     <GraphContainer>
                         <Head>Summary</Head>
-                        <Summary_Chart>
-                            <Speedometer
-                                value={result["Overall Fairness Score"]}
-                            ></Speedometer>
-                            <WER_GenderChart
-                                graphData={category_FS}
-                                title="Fairness Score (By Category)"
-                                labelY="Fairness Score"
-                                xAxis="category"
-                                yAxis="FS"
-                                angle={-45}
-                                bMargin={80}
-                                height="400px"
-                                colorStroke="rgb(2, 167, 5)"
-                                colorFill="rgba(24, 219, 27, 0.447)"
-                            />
-                        </Summary_Chart>
+                        <Summary_wrap>
+                            <div>
+                            <ScoreCard
+                                label="FAAS : "
+                                width={"100%"}
+                                score={result["FAAS"]}
+                            ></ScoreCard>
+                            </div>
+                            <Summary_Chart>
+                                <Speedometer
+                                    value={result["Overall Fairness Score"]}
+                                ></Speedometer>
+                                <WER_GenderChart
+                                    graphData={category_FS}
+                                    title="Fairness Score (By Category)"
+                                    labelY="Fairness Score"
+                                    xAxis="category"
+                                    yAxis="FS"
+                                    angle={-45}
+                                    bMargin={80}
+                                    height="400px"
+                                    colorStroke="rgb(2, 167, 5)"
+                                    colorFill="rgba(24, 219, 27, 0.447)"
+                                />
+                            </Summary_Chart>
+                        </Summary_wrap>
                         <hr></hr>
                         <Combo_Chart>
                             <ComboDivG>
@@ -574,7 +583,10 @@ const Combo_Chart = styled.div`
   justify-content: space-between;
 `;
 
-
+const Summary_wrap = styled.div`
+    display: flex;
+    flex-direction: column;
+`
 const Summary_Chart = styled.div`
   display: flex;
   gap: 2rem;
