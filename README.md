@@ -96,8 +96,11 @@ Link to Backend Server Collab notebook : <a href="https://colab.research.google.
  [OpenAi Model Result Link](https://drive.google.com/drive/folders/1mWnlz4wIfIYkxOLB8zjfta62Eg9ZaB4P?usp=drive_link)
 [Facebook Model Result Link](https://drive.google.com/drive/folders/1-VDnwbLPDrUWdw67x-KUYYQ46PFT5lbd?usp=drive_link)
 
+- finally, you need to download the test.csv file which contains the details about audio dataset like gender,ethnicity,etc. You need to place the folders in the folder "ASR_Fairness_Dataset" in your google drive.  
+ [test.csv Link](https://drive.google.com/file/d/1-54UJWB7g9pXB8t5X6wYdBA_KClRIgLf/view?usp=drive_link)
+
 - Now, your drive folder structure should look like this :  
-![](/public/Backend3.png)
+![](/public/Backend4.png)
 
 - Before running the Backend server on colab notebook, make sure to sign up on ngrok and get your auth token and replace it in colab notebook. [Ngok Website](https://dashboard.ngrok.com/get-started/your-authtoken)
 ![](/public/ngrok_token.png)
