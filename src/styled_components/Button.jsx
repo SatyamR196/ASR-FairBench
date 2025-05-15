@@ -9,16 +9,22 @@ const Button=styled.button`
         padding:8px 11px;
         border-radius: 12px;
         transition: ease-in-out 0.3s;
+
         &:hover{
-        background-color: ${(props)=> props.bg || "white"};
-        transform: scale(1.05);
-        z-index:1
+            background-color: ${(props)=> props.bg || "white"};
+            transform: scale(1.05);
+            z-index:1
         }
         &:active{
-        background-color: ${(props)=> props.bg};
-        transform: scale(0.95);
-        z-index:1;
-        transition: ease-in-out 0.08s;
+            background-color: ${(props)=> props.bg};
+            transform: scale(0.95);
+            z-index:1;
+            transition: ease-in-out 0.08s;
+        }
+        &:disabled{
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
         }
 `;
 

@@ -23,10 +23,12 @@ import Logo from "./assets/logo.png"
 import Metrics from "./components/Metrics";
 import Dataset from "./components/Dataset";
 import Contact from "./components/Contact";
+import ProgressToast from "./styled_components/Progress";
+import SpinnerIcon from "./styled_components/SpinnerIcon";
 
 function App() {
   const toast = useRef(null);
-  const [baseUrl,setBaseUrl] = useState("https://3c01-34-19-75-253.ngrok-free.app") 
+  const [baseUrl,setBaseUrl] = useState("https://satyamr196-asr-fairbench-server.hf.space") 
   console.log(baseUrl);
   const location = useLocation();
   // const {setBaseUrl} = useContext(DataContext) ;
@@ -74,6 +76,10 @@ function App() {
           </Routes>
         </div>
       </Wrapper>
+      
+      <div style={{ display: location.pathname === "/request" ? "block" : "none" }}>
+            <ProgressToast baseUrl={baseUrl} />
+      </div>
     </>
   );
 }

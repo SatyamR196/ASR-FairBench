@@ -1,5 +1,5 @@
 import { React, useState, useRef, useEffect, forwardRef } from "react";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { useReactToPrint } from "react-to-print";
 import styled from "styled-components";
 import axios from "axios";
@@ -22,13 +22,26 @@ export function Request({ showSucess, showError, showInfo, baseUrl }) {
     let [result, setResult] = useState(false);
     let [isRunning, setIsRunning] = useState(false);
     let [category_FS, setCategory_FS] = useState([]);
-    let [value, setValue] = useState("");
+    // let [value, setValue] = useState("");
+    let [auditProgress, setAuditProgress] = useState(0);
     const { sharedData, setSharedData } = useContext(DataContext);
+    let [fetchProgress, setFetchProgress] = useState(false);
 
     const contentRef = useRef(null);
     const reactToPrintFn = useReactToPrint({ contentRef });
 
     const [isUpdated, setIsUpdated] = useState(false);
+
+    const getAuditProgress = async () => {
+        try {
+            const response = await axios.get(`${baseUrl}/status`);
+            setAuditProgress(Math.round(response.data["%_completed"] * 100) / 100);
+            console.log(response.data);
+        } catch (error) {
+            console.error("Error fetching audit progress:", error);
+        }
+    };
+
     const sendPostRequest = async (postData) => {
         try {
             const response = await axios.post(`${baseUrl}/insert`, postData);
@@ -79,9 +92,11 @@ export function Request({ showSucess, showError, showInfo, baseUrl }) {
         formState: { errors },
         clearErrors,
         trigger,
+        setValue,
     } = useForm();
     const onSubmit = async (data) => {
         setIsRunning(true);
+        setFetchProgress(true);
         const queryString = new URLSearchParams(data).toString();
         console.log(data, queryString);
         console.log("line 177", data.ASR_model);
@@ -144,6 +159,21 @@ export function Request({ showSucess, showError, showInfo, baseUrl }) {
     };
 
     useEffect(() => {
+        let interval;
+
+        if (fetchProgress) {
+            interval = setInterval(() => {
+                getAuditProgress();
+            }, 3000);
+        }
+
+        // Cleanup function
+        return () => {
+            if (interval) clearInterval(interval);
+        };
+    }, [isRunning]); // runs whenever isRunning changes
+
+    useEffect(() => {
         if (sharedData && sharedData.Request) {
             setResult(sharedData.Request);
         }
@@ -179,7 +209,7 @@ export function Request({ showSucess, showError, showInfo, baseUrl }) {
     console.log("Category FS = ", category_FS);
 
     return (
-        <>
+        <Main>
             <PrintContainer ref={contentRef}>
                 <h2>Check ASR Model Fairness Score</h2>
                 <InfoPanel>
@@ -200,9 +230,18 @@ export function Request({ showSucess, showError, showInfo, baseUrl }) {
                         </li>
                     </ol>
                     <Tip>
-                        <i className="pi pi-info-circle"></i> The audit may take up to 10
-                        minutes to complete depending on the model size
+                        <i className="pi pi-info-circle"></i> The audit may take up to 60
+                        minutes to complete depending on the model size and hardware.
                     </Tip>
+                    <Tip>
+                        <i className="pi pi-info-circle"></i> If the model has been
+                        evaluated before, results appear instantly; otherwise, please wait
+                        for the audit to finish.
+                    </Tip>
+                    {/* <Tip>
+                        <i className="pi pi-info-circle"></i> If audit for a model is in progress then please wait for it to finish, 
+                        then run fairness audit for your model.
+                    </Tip> */}
                 </InfoPanel>
 
                 <form onSubmit={handleSubmit(onSubmit)}>
@@ -216,76 +255,104 @@ export function Request({ showSucess, showError, showInfo, baseUrl }) {
                                 {...register("ASR_model", {
                                     required: "Please enter a valid model path",
                                 })}
-                                value={value}
-                                onChange={(e) => setValue(e.target.value)}
                             />
                         </ModelInputWrapper>
                         {errors.ASR_model && (
                             <ErrorMessage>{errors.ASR_model.message}</ErrorMessage>
                         )}
+
+
+                        <ExampleModels>
+                            <span>Try these examples: </span>
+                            <ExampleButton
+                                type="button"
+                                onClick={() =>
+                                    setValue("ASR_model", "facebook/wav2vec2-base-960h", {
+                                        shouldValidate: true,
+                                        shouldDirty: true,
+                                    })
+                                }
+                            >
+                                wav2vec2
+                            </ExampleButton>
+                            <ExampleButton
+                                type="button"
+                                onClick={() =>
+                                    setValue("ASR_model", "openai/whisper-tiny", {
+                                        shouldValidate: true,
+                                        shouldDirty: true,
+                                    })
+                                }
+                            >
+                                whisper-tiny
+                            </ExampleButton>
+                            <ExampleButton
+                                type="button"
+                                onClick={() =>
+                                    setValue("ASR_model", "openai/whisper-small", {
+                                        shouldValidate: true,
+                                        shouldDirty: true,
+                                    })
+                                }
+                            >
+                                whisper-small
+                            </ExampleButton>
+                        </ExampleModels>
                     </FormGroup>
-
-                    <ExampleModels>
-                        <span>Try these examples: </span>
-                        <ExampleButton
-                            type="button"
-                            onClick={() => {
-                                setValue("facebook/wav2vec2-base-960h", {
-                                    shouldValidate: true,
-                                    shouldDirty: true,
-                                });
-                            }}
-                        >
-                            wav2vec2
-                        </ExampleButton>
-                        <ExampleButton
-                            type="button"
-                            onClick={() => {
-                                setValue("openai/whisper-small", { shouldValidate: true });
-                            }}
-                        >
-                            whisper-small
-                        </ExampleButton>
-                        <ExampleButton
-                            type="button"
-                            onClick={() => {
-                                setValue("openai/whisper-medium", { shouldValidate: true });
-                            }}
-                        >
-                            whisper-medium
-                        </ExampleButton>
-                    </ExampleModels>
-
-                    <Button type="submit" shadow="blue" bg="#3b82f6" color="white">
+                    <Button
+                        type="submit"
+                        shadow="blue"
+                        bg="#3b82f6"
+                        color="white"
+                        disabled={isRunning}
+                    >
                         Run Fairness Audit
                     </Button>
                 </form>
 
-                {isRunning ? (
-                    <>
-                        <br></br>
-                        <ProgressBar
-                            mode="indeterminate"
-                            style={{ height: "10px" }}
-                        ></ProgressBar>
-                    </>
-                ) : (
-                    <div id="progressBarContainer">
-                        <div id="progressBar"></div>
-                        <div id="progressPercent"></div>
-                    </div>
-                )}
-
                 {result.message && (
-                    <h3>
-                        {" "}
+                    <h3 style={{ marginBottom: 0 }}>
                         <i>
                             <u>{result.message}</u>
-                        </i>{" "}
+                        </i>
+                        <br />
+                        {result.status && (
+                            <b>
+                                {" "}
+                                Progress :{" "}
+                                {Math.round(result.status["%_completed"] * 100) / 100} %
+                            </b>
+                        )}
                     </h3>
                 )}
-                {result.ASR_model && (
+
+                {isRunning ? (
                     <>
+                        <br />
+                        <ProgressBar
+                            mode="indeterminate"
+                            style={{ height: "15px", borderRadius: "1000px" }}
+                        />
+                    </>
+                ) : (
+                    auditProgress > 0 &&
+                    auditProgress < 100 && !result.ASR_model && (
+                        <>
+                            <ProgressBar
+                                value={auditProgress}
+                                style={{
+                                    height: "15px",
+                                    fontSize: "13px",
+                                    borderRadius: "9000px",
+                                    marginBlock: "1.2rem"
+                                }}
+                            />
+                        </>
+                    )
+                )}
+
+                {result.ASR_model && (
+                    <>  <br></br>
                         <GraphContainer>
                             <PageBreakContainer>
                                 <Head>Summary</Head>
@@ -329,14 +396,9 @@ export function Request({ showSucess, showError, showInfo, baseUrl }) {
                                     <ScoreCard
                                         label="Fairness Score : "
                                         width={"100%"}
-                                        score={
-                                            result["Adjusted Category Fairness Score"]["gender"]
-                                        }
+                                        score={result["Adjusted Category Fairness Score"]["gender"]}
                                     ></ScoreCard>
-                                    <BoxPlot
-                                        werData={result.wer_Gender}
-                                        title="Gender"
-                                    ></BoxPlot>
+                                    <BoxPlot werData={result.wer_Gender} title="Gender"></BoxPlot>
                                 </Box_chartV>
                             </PageBreakContainer>
 
@@ -368,7 +430,9 @@ export function Request({ showSucess, showError, showInfo, baseUrl }) {
                                         label="Fairness Score : "
                                         width={"100%"}
                                         score={
-                                            result["Adjusted Category Fairness Score"]["first_language"]
+                                            result["Adjusted Category Fairness Score"][
+                                            "first_language"
+                                            ]
                                         }
                                     ></ScoreCard>
                                     <BoxPlot
@@ -400,22 +464,35 @@ export function Request({ showSucess, showError, showInfo, baseUrl }) {
                         </GraphContainer>
                         <BtnGroup>
                             <Button
-                                onClick={publishResult} 
+                                onClick={publishResult}
                                 shadow="blue"
                                 bg="#3b82f6"
                                 color="white"
                             >
                                 Publish to Leaderboard
                             </Button>
-                            <Button shadow="blue" bg="#3b82f6" color="white" onClick={() => reactToPrintFn()}>Export PDF</Button>
+                            <Button
+                                shadow="blue"
+                                bg="#3b82f6"
+                                color="white"
+                                onClick={() => reactToPrintFn()}
+                            >
+                                Export PDF
+                            </Button>
                         </BtnGroup>
                         <ScrollTop />
                     </>
                 )}
             </PrintContainer>
-        </>
+        </Main>
     );
 }
+
+const Main = styled.div`
+  .p-progressbar-value {
+    background-color: #3b82f6;
+  }
+`;
 
 const PrintContainer = styled.div`
   @media print {
