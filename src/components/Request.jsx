@@ -254,13 +254,26 @@ export function Request({ showSucess, showError, showInfo, baseUrl }) {
                                 id="username"
                                 {...register("ASR_model", {
                                     required: "Please enter a valid model path",
+                                    maxLength: {
+                                        value: 96,
+                                        message: "Model ID must be at most 96 characters long",
+                                    },
+                                    pattern: {
+                                        value: /^[a-zA-Z0-9/_\-.]+$/,
+                                        message: "Model ID can only contain letters, digits, '/ ', '_', and '-'"
+                                    },
+                                    validate: {
+                                        noDoubleDashDot: v =>
+                                            !/--|\.\./.test(v) || "Model ID must not contain '--' or '..'",
+                                        noEdgeDashDot: v =>
+                                            !/^[-.]|[-.]$/.test(v) || "Model ID must not start or end with '-' or '.'"
+                                    }
                                 })}
                             />
                         </ModelInputWrapper>
                         {errors.ASR_model && (
                             <ErrorMessage>{errors.ASR_model.message}</ErrorMessage>
                         )}
-
 
                         <ExampleModels>
                             <span>Try these examples: </span>
@@ -317,11 +330,10 @@ export function Request({ showSucess, showError, showInfo, baseUrl }) {
                         </i>
                         <br />
                         {result.status && (
-                            <b>
-                                {" "}
+                            <><b>
                                 Progress :{" "}
-                                {Math.round(result.status["%_completed"] * 100) / 100} %
-                            </b>
+                                {Math.round(result.status["%_completed"] * 100) / 100} % </b> <I>( * at the time of request )</I>
+                            </>
                         )}
                     </h3>
                 )}
@@ -330,21 +342,24 @@ export function Request({ showSucess, showError, showInfo, baseUrl }) {
                     <>
                         <br />
                         <ProgressBar
+                            color="#3b82f6"
                             mode="indeterminate"
                             style={{ height: "15px", borderRadius: "1000px" }}
                         />
                     </>
                 ) : (
                     auditProgress > 0 &&
-                    auditProgress < 100 && !result.ASR_model && (
+                    auditProgress < 100 &&
+                    !result.ASR_model && (
                         <>
                             <ProgressBar
+                                color="#3b82f6"
                                 value={auditProgress}
                                 style={{
                                     height: "15px",
                                     fontSize: "13px",
                                     borderRadius: "9000px",
-                                    marginBlock: "1.2rem"
+                                    marginBlock: "1.2rem",
                                 }}
                             />
                         </>
@@ -352,7 +367,9 @@ export function Request({ showSucess, showError, showInfo, baseUrl }) {
                 )}
 
                 {result.ASR_model && (
-                    <>  <br></br>
+                    <>
+                        {" "}
+                        <br></br>
                         <GraphContainer>
                             <PageBreakContainer>
                                 <Head>Summary</Head>
@@ -489,10 +506,20 @@ export function Request({ showSucess, showError, showInfo, baseUrl }) {
 }
 
 const Main = styled.div`
-  .p-progressbar-value {
+  /* .p-progressbar-value {
     background-color: #3b82f6;
-  }
+  } */
+   input {
+    margin-bottom: 0.5rem !important;
+    font-family: "Poppins", monospace;
+   }
 `;
+
+const I = styled.i`
+    font-size: 0.8rem;
+    color: #979797;
+    font-weight: 100;
+`
 
 const PrintContainer = styled.div`
   @media print {
@@ -562,7 +589,7 @@ const FormGroup = styled.div`
 const ModelInputWrapper = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
 `;
 
 const ModelPrefix = styled.div`
@@ -579,6 +606,7 @@ const ErrorMessage = styled.div`
   color: #ef4444;
   font-size: 0.875rem;
   margin-top: 0.25rem;
+  margin-bottom: 0.6rem;
 `;
 
 const ExampleModels = styled.div`

@@ -61,14 +61,14 @@ export default function ProgressToast({baseUrl}) {
                 summary: 'No running audit in progress',
                 sticky: true,
                 content: (props) => (
-                    <div className="flex flex-column align-items-left" style={{ flex: '1' }}>
+                    <div key={auditProgress} className="flex flex-column align-items-left" style={{ flex: '1' }}>
                         <div className="flex align-items-center gap-2">
                             <span className="font-bold text-900">Audit Progress : {model}</span>
                         </div>
                         {
                             running ? (<>
                                 <div className="font-medium text-lg my-2 text-900"></div>
-                                <ProgressBar value={auditProgress} style={{ height: "15px", fontSize:"13px", borderRadius:"1000px" }}/>
+                                <ProgressBar color='#3b82f6' value={auditProgress} style={{ height: "15px", fontSize:"13px", borderRadius:"1000px" }}/>
                             </>) : (
                                 <div className="font-medium text-lg my-2 text-900">{props.message.summary}</div>
                             )

@@ -23,19 +23,15 @@ import Logo from "./assets/logo.png"
 import Metrics from "./components/Metrics";
 import Dataset from "./components/Dataset";
 import Contact from "./components/Contact";
-import ProgressToast from "./styled_components/Progress";
+import ProgressToast from "./styled_components/ProgressToast";
 import SpinnerIcon from "./styled_components/SpinnerIcon";
 
 function App() {
   const toast = useRef(null);
   const [baseUrl,setBaseUrl] = useState("https://satyamr196-asr-fairbench-server.hf.space") 
+  // const [baseUrl,setBaseUrl] = useState("http://localhost:7860") 
   console.log(baseUrl);
   const location = useLocation();
-  // const {setBaseUrl} = useContext(DataContext) ;
-  // // ✅ Set `baseUrl` inside `useEffect`
-  // useEffect(() => {
-  //   setBaseUrl("http://127.0.0.1:3000/");
-  // }, []); // Run only once when App mounts
 
   const showSucess = () => {//For toast
     toast.current.show({ severity: 'success', summary: 'Success', detail: 'Model added to Leaderboard 🤗' });
