@@ -1,141 +1,166 @@
 import React from 'react';
 import styled from 'styled-components';
+import 'katex/dist/katex.min.css';
+import { InlineMath, BlockMath } from 'react-katex';
 
 function Metrics() {
   return (
-      <Container>
-        <h1>Metrics</h1>
+    <Container>
+      <h1>Metrics</h1>
+      <Para>
+        Below are the key metrics used to evaluate ASR models in our leaderboard.
+      </Para>
+
+      <Section>
+        <Head>1. Word Error Rate (WER)</Head>
         <Para>
-          Below are the key metrics used to evaluate ASR models in our
-          leaderboard.
+          WER measures the accuracy of ASR models by calculating the number of
+          substitutions, deletions, and insertions compared to the reference
+          transcript.
         </Para>
+        <FormulaContainer>
+          <BlockMath math="\text{WER} = \frac{S + D + I}{N}" />
+        </FormulaContainer>
+        <Para>Where:</Para>
+        <ul>
+          <li><b>S:</b> Number of substitutions</li>
+          <li><b>D:</b> Number of deletions</li>
+          <li><b>I:</b> Number of insertions</li>
+          <li><b>N:</b> Total number of words in the reference transcript</li>
+        </ul>
+      </Section>
 
-        <Section>
-          <Head>1. Word Error Rate (WER)</Head>
-          <Para>
-            WER measures the accuracy of ASR models by calculating the number of
-            substitutions, deletions, and insertions compared to the reference
-            transcript.
-            <Formula>WER = (S + D + I) / N</Formula>
-            <p>S - No. of substitutions</p>
-            <p>D - No. of deletions</p>
-            <p>I - No. of insertions</p>
-            <p>N - Total no. of transcribed words</p>
-          </Para>
-        </Section>
+      <Section>
+        <Head>2. Fairness Assessment Model</Head>
+        <Para>
+          To assess fairness across demographic groups, we apply a mixed-effects Poisson 
+          regression model to estimate WER disparities:
+        </Para>
+        <FormulaContainer>
+          <BlockMath math="\log(\text{WER}_i) = \beta_0 + \beta_1 X_i + \beta_2 Z_i + u_i" />
+        </FormulaContainer>
+        <Para>Where:</Para>
+        <ul>
+          <li><b>WER<sub>i</sub>:</b> Observed word error rate for individual i</li>
+          <li><b>β<sub>0</sub>:</b> Intercept term, representing the baseline (log) WER for a reference group with no demographic or covariate influence</li>
+          <li><b>X<sub>i</sub>:</b> Demographic attributes (e.g., gender, race, accent) for individual i</li>
+          <li><b>β<sub>1</sub>:</b> Coefficient that quantifies the impact of demographic factors on WER</li>
+          <li><b>Z<sub>i</sub>:</b> Covariates (e.g., audio length, noise level) affecting WER but unrelated to fairness</li>
+          <li><b>β<sub>2</sub>:</b> Coefficient capturing the effect of covariates on WER</li>
+          <li><b>u<sub>i</sub>:</b> Random effect accounting for individual-level variability (e.g., speaker-specific variation)</li>
+        </ul>
+      </Section>
 
-        <Section>
-          <Head>2. Overall Fairness Score</Head>
-          <Para>
-            We use a mixed-effect Poisson regression approach to calculate
-            fairness scores, considering the following components:
-          </Para>
-          <Para>
-            <Formula>
-              {" "}
-              log(λ<sub>ij</sub>) = log(N<sub>ij</sub>) + µ<sub>f(i)</sub> + r
-              <sub>i</sub> + θ<sup>T</sup>x<sub>ij</sub>{" "}
-            </Formula>
-          </Para>
-          <ul>
-            <li>
-              <b>
-                λ<sub>ij</sub>:
-              </b>{" "}
-              The expected rate of the response variable for the <i>i-th</i>{" "}
-              speaker and <i>j-th</i> group.
-            </li>
-            <li>
-              <b>
-                N<sub>ij</sub>:
-              </b>{" "}
-              The observed count for the <i>i-th</i> speaker and <i>j-th</i>{" "}
-              group.
-            </li>
-            <li>
-              <b>
-                µ<sub>f(i)</sub>:
-              </b>{" "}
-              The fixed effect of the <i>i-th</i> speaker's attribute (e.g.,
-              gender, socioeconomic status, etc.).
-            </li>
-            <li>
-              <b>
-                r<sub>i</sub>:
-              </b>{" "}
-              The random effect of the <i>i-th</i> speaker.
-            </li>
-            <li>
-              <b>
-                θ<sup>T</sup>x<sub>ij</sub>:
-              </b>{" "}
-              The interaction between the fixed effects and speaker's attributes
-              (gender, socioeconomic status, etc.).
-            </li>
-          </ul>
-        </Section>
+      <Section>
+        <Head>3. Group-level Fairness Score Calculation</Head>
+        <Para>
+          To compute group-level fairness scores, we calculate the predicted WER for each demographic group g:
+        </Para>
+        <FormulaContainer>
+          <BlockMath math="\text{WER}_g = \frac{e^{(\beta_0 + \beta_g + \beta_{\log\text{Ref}} \cdot X)}}{e^X - 1}" />
+        </FormulaContainer>
+        <Para>Where:</Para>
+        <ul>
+          <li><b>β<sub>g</sub>:</b> Group-specific effect for demographic group g</li>
+          <li><b>β<sub>logRef</sub>:</b> Coefficient based on log-transformed reference group</li>
+          <li><b>X:</b> Predictor variable capturing group identity or covariates</li>
+        </ul>
+        <Para>
+          These predicted WER values are then converted to <b>raw fairness scores</b> (on a 0–100 scale):
+        </Para>
+        <FormulaContainer>
+          <BlockMath math="\text{Raw fairness score}_g = 100 \times \left(1 - \frac{\text{WER}_g - \min(\text{WER})}{\max(\text{WER}) - \min(\text{WER})}\right)" />
+        </FormulaContainer>
+        <Para>
+          This normalization ensures that groups with the <b>lowest WER</b> receive the <b>highest fairness score</b>.
+        </Para>
+        <Para>
+          To compute a category-level score (e.g., for a particular demographic attribute like gender), 
+          we take a weighted average across all groups in that category:
+        </Para>
+        <FormulaContainer>
+          <BlockMath math="\text{Category score} = \sum_g p_g \times \text{Raw fairness score}_g" />
+        </FormulaContainer>
+        <Para>Where:</Para>
+        <ul>
+          <li><b>p<sub>g</sub>:</b> Proportion of data represented by group g</li>
+        </ul>
+      </Section>
 
-        <Section>
-          <Head>3. Fairness Adjusted ASR Score (FAAS)</Head>
-          <Para>
-            The Fairness Adjusted ASR Score (FAAS) is a composite metric that
-            balances both accuracy and fairness in evaluating ASR systems. It
-            incorporates the <b>Word Error Rate (WER)</b> and the{" "}
-            <b>Overall Fairness Score</b> to ensure that models are not only
-            accurate but also equitable in their performance across various
-            demographic groups.
-          </Para>
-          <Para>
-            <Formula>
-              {" "}
-              FAAS = 10 * log<sub>10</sub>(Overall_Fairness_Score / WER){" "}
-            </Formula>
-          </Para>
-          <Para>
-            A higher FAAS score indicates a model that performs well both in
-            terms of accuracy (lower WER) and fairness (higher Overall Fairness
-            Score). This metric encourages the development of ASR models that
-            are both high-performing and inclusive.
-          </Para>
-        </Section>
+      <Section>
+        <Head>4. Statistical Adjustment and FAAS</Head>
+        <Para>
+          We assess whether demographic disparities are <b>statistically significant</b> using a 
+          <b> Likelihood Ratio Test (LRT)</b> that compares two models:
+        </Para>
+        <FormulaContainer>
+          <BlockMath math="\text{LRT} = 2 \times (\log L_{\text{full}} - \log L_{\text{reduced}})" />
+        </FormulaContainer>
+        <Para>Where:</Para>
+        <ul>
+          <li><b>L<sub>full</sub>:</b> Log-likelihood of model including demographic attributes</li>
+          <li><b>L<sub>reduced</sub>:</b> Log-likelihood of model excluding demographic attributes</li>
+        </ul>
+        <Para>
+          If the resulting <b>p-value</b> is below a significance threshold (e.g., p &lt; 0.05), 
+          it indicates that demographic disparities are <b>statistically significant</b>. 
+          In such cases, a penalty is applied:
+        </Para>
+        <FormulaContainer>
+          <BlockMath math="\text{Adjusted score} = \text{Category score} \times \left(\frac{p}{0.05}\right)" />
+        </FormulaContainer>
+        <Para>
+          Lower p-values imply a higher penalty on the fairness score.
+          If p ≥ 0.05, no adjustment is made.
+        </Para>
+        <Para>
+          Finally, the <b>overall fairness score</b> is computed across all demographic categories c:
+        </Para>
+        <FormulaContainer>
+          <BlockMath math="\text{Overall score} = \frac{\sum_c w_c \times \text{Adjusted score}_c}{\sum_c w_c}" />
+        </FormulaContainer>
+        <Para>Where:</Para>
+        <ul>
+          <li><b>w<sub>c</sub>:</b> Importance weight for category c</li>
+        </ul>
+      </Section>
 
-        <Section>
-          <Head>4. Real-Time Factor (RTFx)</Head>
-          <Para>
-            RTFx evaluates the efficiency of an ASR model in processing speech,
-            specifically measuring its latency. It helps assess how fast the
-            model transcribes audio data compared to the actual length of the
-            audio.
-          </Para>
-          <Para>
-            <Formula>
-              {" "}
-              RTFx = T<sub>process</sub> / T<sub>audio</sub>
-            </Formula>
-          </Para>
-          <Para>
-            Where:
-            <ul>
-              <li>
-                <b>
-                  T<sub>process</sub>:
-                </b>{" "}
-                Time taken by the ASR model to process and transcribe the audio.
-              </li>
-              <li>
-                <b>
-                  T<sub>audio</sub>:
-                </b>{" "}
-                Total duration of the audio input in seconds.
-              </li>
-            </ul>
-          </Para>
-          <Para>
-            A lower RTFx value indicates better efficiency, as the model
-            processes the audio quickly in comparison to its duration.
-          </Para>
-        </Section>
-      </Container>
+      <Section>
+        <Head>5. Fairness Adjusted ASR Score (FAAS)</Head>
+        <Para>
+          The Fairness Adjusted ASR Score (FAAS) is a comprehensive metric that balances both accuracy and fairness 
+          in evaluating ASR systems. It incorporates the <b>Word Error Rate (WER)</b> and the <b>Overall Fairness Score</b> 
+          to ensure that models are not only accurate but also equitable in their performance across demographic groups.
+        </Para>
+        <FormulaContainer>
+          <BlockMath math="\text{FAAS} = 10 \times \log_{10}\left(\frac{\text{Overall\_Fairness\_Score}}{\text{WER}}\right)" />
+        </FormulaContainer>
+        <Para>
+          A higher FAAS score indicates a model that performs well both in terms of accuracy (lower WER) and fairness 
+          (higher Overall Fairness Score). This framework encourages the development of ASR models that are both 
+          high-performing and inclusive across all user populations.
+        </Para>
+      </Section>
+
+      <Section>
+        <Head>6. Real-Time Factor (RTFx)</Head>
+        <Para>
+          RTFx evaluates the efficiency of an ASR model in processing speech, specifically measuring its latency. It helps 
+          assess how fast the model transcribes audio data compared to the actual length of the audio.
+        </Para>
+        <FormulaContainer>
+          <BlockMath math="\text{RTFx} = \frac{T_{\text{process}}}{T_{\text{audio}}}" />
+        </FormulaContainer>
+        <Para>Where:</Para>
+        <ul>
+          <li><b>T<sub>process</sub>:</b> Time taken by the ASR model to process and transcribe the audio</li>
+          <li><b>T<sub>audio</sub>:</b> Total duration of the audio input in seconds</li>
+        </ul>
+        <Para>
+          A lower RTFx value indicates better efficiency, as the model processes the audio quickly in comparison to its duration.
+        </Para>
+      </Section>
+    </Container>
   );
 }
 
@@ -168,13 +193,12 @@ const Para = styled.p`
   line-height: 1.6;
 `;
 
-const Formula = styled.p`
+const FormulaContainer = styled.div`
   background: #f3f4f6;
-  padding: 0.8rem;
-  font-size: 1.2rem;
-  font-weight: bold;
+  padding: 1rem;
   border-radius: 8px;
-  text-align: center;
-  margin-top: 0.5rem;
-  color: #1e3a8a;
+  margin: 1rem 0;
+  display: flex;
+  justify-content: center;
+  overflow-x: auto;
 `;
