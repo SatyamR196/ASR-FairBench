@@ -83,19 +83,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="asr-leaderboard" class="level1">
 <h1>ASR LEADERBOARD</h1>
 <p><img src=".\public/Github_logo.png" class="img-fluid"></p>
+<section id="screenshots" class="level2">
+<h2 class="anchored" data-anchor-id="screenshots">Screenshots</h2>
+<p><img src=".\public/Req_home.png" class="img-fluid"> <img src=".\public/Req_result.png" class="img-fluid"> <img src=".\public/Req_result2.png" class="img-fluid"> <img src=".\public/Req_result3.png" class="img-fluid"> <img src=".\public/LBoard.png" class="img-fluid"> <img src=".\public/Dataset.png" class="img-fluid"></p>
+<section id="features" class="level3">
+<h3 class="anchored" data-anchor-id="features">Features</h3>
+<ul>
+<li><strong>Intuitive UI</strong> – A simple, clean, and visually appealing interface</li>
+<li><strong>Fast Model Auditing</strong> – Submit a model and get audited within minutes.</li>
+<li><strong>Graphical Insight</strong>s – Results are visualized using box plots and histograms, which can be exported as PDF. <a href="public/Print_Results.pdf">📄Download Result PDF</a></li>
+<li><strong>Leaderboard Publishing</strong> – Publish audited results to a dynamic leaderboard.</li>
+<li><strong>Advanced Leaderboard Features</strong> – Filter by model name, sort by any column, and export data as CSV or PDF.</li>
+<li><strong>Optimized Frontend Performance</strong> – Configured the React.js frontend to improve initial load time by 30–50%.</li>
+<li><strong>Efficient Backend Processing</strong> – Built with Flask and runs on Google Colab, utilizing GPUs for fast LLM inference.</li>
+<li><strong>Fully Reproducible</strong> – The application can be replicated from the GitHub codebase by following the provided instructions.</li>
+<li><strong>Future Deployment</strong> – Planned deployment on Hugging Face Spaces for broader accessibility.</li>
+</ul>
+</section>
 <section id="tech-stack" class="level3">
 <h3 class="anchored" data-anchor-id="tech-stack">Tech Stack</h3>
 <p><strong>Client:</strong> React, Vite, PrimeReact UI, Styled Components, Axios, Recharts, React Router, React-Plotly</p>
 <p><strong>Server:</strong> Flask, Colab, Ngrok ,Python, PyMongo, Hugging Face Transformers, NumPy, Pandas</p>
 </section>
-<section id="features" class="level3">
-<h3 class="anchored" data-anchor-id="features">Features</h3>
-<ul>
-<li>Light/dark mode toggle</li>
-<li>Live previews</li>
-<li>Fullscreen mode</li>
-<li>Cross platform</li>
-</ul>
 </section>
 <section id="api-reference" class="level2">
 <h2 class="anchored" data-anchor-id="api-reference">API Reference</h2>
@@ -120,6 +129,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="run-locally" class="level2">
 <h2 class="anchored" data-anchor-id="run-locally">Run Locally</h2>
+<section id="prerequisites" class="level4">
+<h4 class="anchored" data-anchor-id="prerequisites"><u>Prerequisites</u> :</h4>
+<ul>
+<li><strong>Node.js</strong>: Make sure you have Node.js v22.12.0 or higher installed on your machine. You can download it from <a href="https://nodejs.org/">Node.js official website</a>.</li>
+<li><strong>Google Colab</strong>: You will need a Google account to access Google Colab.</li>
+<li><strong>Ngrok</strong>: Sign up for a free account on <a href="https://ngrok.com/">ngrok</a> to expose your local server to the internet.</li>
+</ul>
+</section>
 <section id="frontend" class="level3">
 <h3 class="anchored" data-anchor-id="frontend"><u>Frontend</u> :</h3>
 <p>Clone the project from GitHub to your local machine.</p>
@@ -142,10 +159,36 @@ Now you can open the link in the web browser, home page will look something like
 <li>Open the Google Colab notebook using the link below.</li>
 </ul>
 <p>Link to Backend Server Collab notebook : <a href="https://colab.research.google.com/drive/1nIA8IyejvuRauvFbOCbpRlN1sEIK01Gh#scrollTo=_bZc5hkTEfWE"> Click here </a></p>
+<ul>
+<li><p>Open your google drive, Create a folder named “ASR_Fairness_Dataset” and upload the above colab notebook there.</p></li>
+<li><p>You also need to upload the dataset to your google drive. Download the dataset from the link below, name it “asr_fairness_audio” and upload it to the same folder “ASR_Fairness_Dataset” in your google drive. <a href="https://drive.google.com/drive/folders/1lTT8NF9hVRpO4NYrn2qV8dNTmP9CNtVG">Dataset Link</a></p></li>
+<li><p>Additionally, you can also download the CSV files which contains the results of the ASR models on the dataset. You need to place the folders in the folder “ASR_Fairness_Dataset” in your google drive.<br>
+<a href="https://drive.google.com/drive/folders/1mWnlz4wIfIYkxOLB8zjfta62Eg9ZaB4P?usp=drive_link">OpenAi Model Result Link</a> <a href="https://drive.google.com/drive/folders/1-VDnwbLPDrUWdw67x-KUYYQ46PFT5lbd?usp=drive_link">Facebook Model Result Link</a></p></li>
+<li><p>finally, you need to download the test.csv file which contains the details about audio dataset like gender,ethnicity,etc. You need to place the folders in the folder “ASR_Fairness_Dataset” in your google drive.<br>
+<a href="https://drive.google.com/file/d/1-54UJWB7g9pXB8t5X6wYdBA_KClRIgLf/view?usp=drive_link">test.csv Link</a></p></li>
+<li><p>Now, your drive folder structure should look like this :<br>
+<img src=".\public/Backend4.png" class="img-fluid"></p></li>
+<li><p>Before running the Backend server on colab notebook, make sure to sign up on ngrok and get your auth token and replace it in colab notebook. <a href="https://dashboard.ngrok.com/get-started/your-authtoken">Ngok Website</a> <img src=".\public/ngrok_token.png" class="img-fluid"></p></li>
+</ul>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">!ngrok</span> config add-authtoken <span class="op">&lt;</span>YOUR NGROK TOKEN<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><p>Now, run the colab notebook. It will ask for permission to access your google drive, allow it.</p></li>
+<li><p>After running the notebook, ngok will give you a public url to access the backend server api. Copy the link and paste it in the frontend code, App.jsx , baseUrl. <img src=".\public/Url_app.png" class="img-fluid"></p></li>
+</ul>
+<p><strong>Note :</strong> If you change the name of any the folder, make sure to change the path in the colab notebook as well.</p>
+<section id="sucessful-now-you-can-run-the-application-on-your-local-machine" class="level5">
+<h5 class="anchored" data-anchor-id="sucessful-now-you-can-run-the-application-on-your-local-machine">Sucessful 🤗 ! now you can run the application on your local machine</h5>
+</section>
 </section>
 <section id="feedback-support" class="level3">
 <h3 class="anchored" data-anchor-id="feedback-support">Feedback &amp; Support</h3>
-<p>For any type of feedback or support, email fake@fake.com or join our Slack channel.</p>
+<p>If you have any feedback or need support, feel free to reach out to us:</p>
+<ul>
+<li><strong>Anand Rai</strong>: <a href="mailto:raianand.1991@gmail.com">raianand.1991@gmail.com</a></li>
+<li><strong>Prof.&nbsp;Animesh Mukherjee</strong>: <a href="mailto:animeshm@gmail.com">animeshm@gmail.com</a></li>
+<li><strong>Satyam Rahangdale</strong>: <a href="mailto:satyamrahangdale196@gmail.com">satyamrahangdale196@gmail.com</a></li>
+<li><strong>Utkarsh Anand</strong>: <a href="mailto:ua28012006@gmail.com">ua28012006@gmail.com</a></li>
+</ul>
 </section>
 </section>
 </section>

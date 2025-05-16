@@ -73,6 +73,7 @@ function Metrics() {
         </FormulaContainer>
         <Para>
           This normalization ensures that groups with the <b>lowest WER</b> receive the <b>highest fairness score</b>.
+          On this scale, 100 represents the most fair (lowest WER), and 0 represents the least fair (highest WER).
         </Para>
         <Para>
           To compute a category-level score (e.g., for a particular demographic attribute like gender), 
@@ -85,6 +86,7 @@ function Metrics() {
         <ul>
           <li><b>p<sub>g</sub>:</b> Proportion of data represented by group g</li>
         </ul>
+        <Para>The weights ensure that the fairness score reflects the real-world distribution of groups.</Para>
       </Section>
 
       <Section>

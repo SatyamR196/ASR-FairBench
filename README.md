@@ -1,5 +1,4 @@
-# ASR LEADERBOARD
-![](/public/Github_logo.png)
+# ASR LEADERBOARD [[Link]](https://satyamr196-asr-fairbench.static.hf.space)
 
 ## Screenshots
 ![](/public/Req_home.png)
@@ -20,13 +19,15 @@
 - **Optimized Frontend Performance** – Configured the React.js frontend to improve initial load time by 30–50%.
 - **Efficient Backend Processing** – Built with Flask and runs on Google Colab, utilizing GPUs for fast LLM inference.
 - **Fully Reproducible** – The application can be replicated from the GitHub codebase by following the provided instructions.
-- **Future Deployment** – Planned deployment on Hugging Face Spaces for broader accessibility.
+- **Deployment** – Application is deployed on Hugging Face Spaces for broader accessibility. [[Link]](https://huggingface.co/spaces/satyamr196/ASR-FairBench)
 
 ### Tech Stack
 
-**Client:** React, Vite, PrimeReact UI, Styled Components, Axios, Recharts, React Router, React-Plotly  
+**Client:** React, Vite, PrimeReact UI, Styled Components, Axios, Recharts, React Router, React-Plotly, React-katex  
 
-**Server:** Flask, Colab, Ngrok ,Python, PyMongo, Hugging Face Transformers, NumPy, Pandas
+**Server(Using Docker):** Flask, Python, Hugging Face Transformers, Hugging Face Hub, Hugging Face Dataset, NumPy, Pandas, gunicorn, torch, statsmodels
+
+**Server(Using Google Colab):** Flask, Colab, Ngrok ,Python, PyMongo, Hugging Face Transformers, NumPy, Pandas, torch, statsmodels
 
 ## API Reference
 
@@ -57,8 +58,9 @@ Example :
 ## Run Locally
 ####  <u>Prerequisites</u> :
 - **Node.js**: Make sure you have Node.js v22.12.0 or higher installed on your machine. You can download it from [Node.js official website](https://nodejs.org/).
-- **Google Colab**: You will need a Google account to access Google Colab.
-- **Ngrok**: Sign up for a free account on [ngrok](https://ngrok.com/) to expose your local server to the internet.
+- **Docker**: You are required to install Docker Desktop  [(Link 1)](https://www.docker.com/products/docker-desktop/) [(Link 2)](https://docs.docker.com/get-started/get-docker/) to build and run docker container on your system.(Method 1)
+- **Google Colab**: You will need a Google account to access Google Colab.(Method 2)
+- **Ngrok**: Sign up for a free account on [ngrok](https://ngrok.com/) to expose your local server to the internet.(Method 2)
 
 ###  <u>Frontend</u> :
 
@@ -96,7 +98,28 @@ Now you can open the link in the web browser, home page will look something like
 ![](/public/CF_Leaderboard.png)
 #####  Congratulations 🤗 ! on sucessfully cloning the frontend, next we will be setting up the backend on google colab
 
-###  <u>Backend</u> :  
+###  <u>Backend</u> : 
+
+#### <i><u>Method 1</u></i> : Using Docker + Hugging Face
+
+- Create account on hugging face and also generate acess token with read and write permission.
+
+![](/public/Access_token.png)
+
+- Then you can selet either clone the repository or duplicate the space option to create your own space.
+
+![](/public/clone_repo.png)
+
+- Then your server will be running on hugging face space. You can access the server clicking on 3 dots icon and then select "embed this space" option.
+
+- You can also run the server locally using docker. For that you need to install docker on your system. Then select the "Run locally" option as shown in above image.
+
+- Finally paste the server link in the frontend code > App.jsx > baseUrl. Now frontend will be able to access the backend server.
+
+![](/public/Url_app.png)
+
+
+#### <i><u>Method 2</u></i> : Using Google Colab
 - Open the Google Colab notebook using the link below.
 
 Link to Backend Server Collab notebook : <a href="https://colab.research.google.com/drive/1nIA8IyejvuRauvFbOCbpRlN1sEIK01Gh#scrollTo=_bZc5hkTEfWE"> Click here </a>

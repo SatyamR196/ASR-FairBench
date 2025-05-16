@@ -28,8 +28,8 @@ import SpinnerIcon from "./styled_components/SpinnerIcon";
 
 function App() {
   const toast = useRef(null);
-  const [baseUrl,setBaseUrl] = useState("https://satyamr196-asr-fairbench-server.hf.space") 
-  // const [baseUrl,setBaseUrl] = useState("http://localhost:7860") 
+  // const [baseUrl,setBaseUrl] = useState("https://satyamr196-asr-fairbench-server.hf.space") 
+  const [baseUrl,setBaseUrl] = useState("http://localhost:7860") 
   console.log(baseUrl);
   const location = useLocation();
 
