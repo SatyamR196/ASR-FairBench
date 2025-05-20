@@ -59,11 +59,11 @@ export default function ProgressToast({baseUrl}) {
             toastBC.current.show({
                 severity: 'info',
                 summary: 'No running audit in progress',
-                sticky: true,
+                sticky: false,
                 content: (props) => (
                     <div key={auditProgress} className="flex flex-column align-items-left" style={{ flex: '1' }}>
                         <div className="flex align-items-center gap-2">
-                            <span className="font-bold text-900">Audit Progress : {model}</span>
+                            <span className="font-bold text-900">Audit Progress : </span>
                         </div>
                         {
                             running ? (<>
