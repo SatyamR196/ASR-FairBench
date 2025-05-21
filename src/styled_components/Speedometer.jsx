@@ -2,6 +2,17 @@ import {React, useState,useEffect} from "react";
 import ReactSpeedometer from "react-d3-speedometer";
 
 const CustomSpeedometer = ({value,w}) => {
+    const [width, setWidth] = useState(window.innerWidth);
+    const [fontValue, setFontValue] = useState(width < 560 ? "10px" : "16px");
+    useEffect(() => {
+        const handleResize = () => {    
+            setWidth(window.innerWidth);
+            setFontValue(window.innerWidth < 560 ? "10px" : "16px");
+        }
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     value = Math.round(value * 100) / 100;
     return(<div style={{ width: "100%", maxWidth: "500px",minHeight:"300px", margin: "0 auto", display: 'flex', aliginItems: 'center'  }}>
         <ReactSpeedometer
@@ -9,6 +20,7 @@ const CustomSpeedometer = ({value,w}) => {
             value={value} // Set needle position
             needleColor="steelblue" // Light blue needle
             segments={5} // Five segments
+            labelFontSize={fontValue}
             segmentColors={[
                 "#ff4b33",           // Very Bad
                 "rgb(254, 186, 0)",       // Bad

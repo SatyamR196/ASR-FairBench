@@ -697,12 +697,16 @@ const Summary_wrap = styled.div`
   flex-direction: column;
 `;
 const Summary_Chart = styled.div`
-  display: flex;
-  gap: 2rem;
-  min-height: 60vh;
-  justify-content: space-between;
-  align-content: center;
-  align-items: center;
+    display: flex;
+    gap: 2rem;
+    min-height: 60vh;
+    justify-content: space-between;
+    align-content: center;
+    align-items: center;
+    flex-direction: column;
+    @media (min-width: 1028px) {
+        flex-direction: row;
+    }
 `;
 
 const Box_chartV = styled.div`
