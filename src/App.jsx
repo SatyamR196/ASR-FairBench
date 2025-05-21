@@ -178,7 +178,7 @@ const Wrapper = styled.div`
     margin-bottom: 20px;
     border: none;
     border-radius: 10px;
-    width: 65%;
+    /* width: 65%; */
     text-align: center;
   }
   #progressBarContainer {

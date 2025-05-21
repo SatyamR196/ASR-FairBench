@@ -513,6 +513,7 @@ const Main = styled.div`
    input {
     margin-bottom: 0.5rem !important;
     font-family: "Poppins", monospace;
+    width: 60%;
     @media ${media.tablet} {
         width: 80%;
     }
