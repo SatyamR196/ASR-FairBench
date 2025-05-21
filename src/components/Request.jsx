@@ -17,6 +17,7 @@ import Speedometer from "../styled_components/Speedometer";
 import { Toast } from "primereact/toast";
 import { ScrollTop } from "primereact/scrolltop";
 import ScoreCard from "../styled_components/Scorecard";
+import { media } from "../Utils/helper";
 
 export function Request({ showSucess, showError, showInfo, baseUrl }) {
     let [result, setResult] = useState(false);
@@ -512,6 +513,12 @@ const Main = styled.div`
    input {
     margin-bottom: 0.5rem !important;
     font-family: "Poppins", monospace;
+    @media ${media.tablet} {
+        width: 80%;
+    }
+    @media ${media.mobile} {
+        width: 95%;
+    }
    }
 `;
 
@@ -548,6 +555,11 @@ const InfoPanel = styled.div`
   ol {
     margin-left: 1.5rem;
     margin-bottom: 0.75rem;
+    @media ${media.mobile} {
+        margin-left: 0.5rem;
+        margin-bottom: 0.5rem;
+        padding-left: 0.9rem;
+    }
   }
 
   li {
@@ -556,14 +568,23 @@ const InfoPanel = styled.div`
 `;
 
 const Tip = styled.p`
-  font-size: 0.9rem;
-  margin-top: 0.5rem;
-  color: #3b82f6;
-  font-style: italic;
+    font-size: 1rem;
+    margin-top: 0.5rem;
+    color: #3b82f6;
+    font-style: italic;
 
-  i {
+    i {
     margin-right: 0.5rem;
-  }
+    }
+    @media ${media.tablet} {
+        font-size: 0.9rem;
+        margin-top: 0.3rem;
+    }
+    @media ${media.mobile} {
+        font-size: 0.8rem;
+        margin-top: 0.3rem;
+    }
+
 `;
 
 const ModelExample = styled.code`

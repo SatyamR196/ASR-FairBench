@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import React from 'react'
 import { Link,useLocation} from "react-router-dom";
+import { media } from "../Utils/helper.js"; // 👈 adjust path as needed
 function Nav() {
   const location = useLocation();
   return (
@@ -27,16 +28,18 @@ const NavBar = styled.div`
     backdrop-filter: blur(10px);
     border-radius: 15px;
 
-    /* a {
-        text-decoration: none;
-        font-size: 1.3rem;
-        font-weight: bold;
-        color: #000000;
-        transition: color 0.3s;
+    @media ${media.tablet} {
+        gap: 2rem;
+        padding: 0.5rem;
     }
-    a:hover {
-        color: #3b82f6;
-    } */
+    @media ${media.mobile} {
+        gap: 1rem;
+        padding: 0.4rem;
+    }
+    @media (max-width: 370px) {
+      flex-wrap: wrap ;
+      gap: 1.5rem;
+    }
 `;
 
 // Styled Link with Active Highlighting
@@ -47,9 +50,19 @@ const NavLink = styled(Link)`
   color: ${({ $active }) => ($active ? "#3b82f6" : "#000000")};
   border-bottom: ${({ $active }) => ($active ? "3px solid #3b82f6" : "none")};
   /* transition: color 0.3s, border-bottom 0.3s; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 
   &:hover {
     color: #3b82f6;
+  }
+  @media ${media.tablet} {
+    font-size: 1.1rem;
+  }
+  @media ${media.mobile} {
+    font-size: 0.9rem;
   }
 `;
 export default Nav

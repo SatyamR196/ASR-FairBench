@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import 'katex/dist/katex.min.css';
 import { InlineMath, BlockMath } from 'react-katex';
+import { media } from '../Utils/helper.js';
 
 function Metrics() {
   return (
@@ -175,6 +176,12 @@ const Container = styled.div`
   padding: 2rem;
   max-width: 900px;
   margin: auto;
+  @media ${media.mobile} {
+    padding: 1rem;
+  }
+  @media (max-width: 370px) {
+    padding: 0.2rem;
+  }
 `;
 
 const Section = styled.div`

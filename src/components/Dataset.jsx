@@ -8,6 +8,7 @@ import Dateset from '../assets/Dataset_tableHQ.png'
 import ClusterGroup from '../assets/Cluster.png'
 import ScoreCard from '../styled_components/Scorecard'
 import { Button } from 'primereact/button';
+import { media } from '../Utils/helper'
 
 function Dataset() {
   return (
@@ -72,7 +73,7 @@ export default Dataset;
 const Container = styled.div`
     display: flex;
     flex-direction: column;
-    padding: 2rem 1rem;
+    padding: 2rem 0rem;
     padding-top: 0;
     margin-inline: auto;
     max-width: 1200px; /* To control the width */
@@ -84,6 +85,14 @@ const Gridbox = styled.div`
     grid-template-columns: 1fr 1fr;
     grid-gap: 2rem 4rem;
     padding: 2rem 0;
+    @media ${media.tablet} {
+      grid-gap: 3rem;
+    }
+    @media ${media.mobile} {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
 `;
 
 const Section = styled.section`
@@ -101,6 +110,12 @@ const Image = styled.img`
     max-width: 80%;
     display: block;
     margin: 1rem auto;
+    @media ${media.tablet} {
+        max-width: 90%;
+    }
+    @media ${media.mobile} {
+    max-width: 100%;
+    }
 `;
 
 const Para = styled.p`
