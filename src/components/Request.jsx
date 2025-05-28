@@ -37,7 +37,6 @@ export function Request({ showSucess, showError, showInfo, baseUrl }) {
         try {
             const response = await axios.get(`${baseUrl}/status`);
             setAuditProgress(Math.round(response.data["%_completed"] * 100) / 100);
-            console.log(response.data);
         } catch (error) {
             console.error("Error fetching audit progress:", error);
         }
@@ -46,7 +45,6 @@ export function Request({ showSucess, showError, showInfo, baseUrl }) {
     const sendPostRequest = async (postData) => {
         try {
             const response = await axios.post(`${baseUrl}/insert`, postData);
-            console.log("Success:", response.data);
 
             if (response.data.exists) {
                 console.log("Already in DB");
@@ -99,8 +97,6 @@ export function Request({ showSucess, showError, showInfo, baseUrl }) {
         setIsRunning(true);
         setFetchProgress(true);
         const queryString = new URLSearchParams(data).toString();
-        console.log(data, queryString);
-        console.log("line 177", data.ASR_model);
 
         try {
             const res = await axios.get(`${baseUrl}/api?${queryString}`, {
@@ -153,7 +149,7 @@ export function Request({ showSucess, showError, showInfo, baseUrl }) {
                     },
                 ],
             });
-            console.log("Below SharedData", category_FS, sharedData);
+            
         } catch (error) {
             console.error("Retrying due to error:", error.message);
         }
@@ -207,8 +203,6 @@ export function Request({ showSucess, showError, showInfo, baseUrl }) {
         "ngrok-skip-browser-warning": "10008",
     };
 
-    console.log("Category FS = ", category_FS);
-
     return (
         <Main>
             <PrintContainer ref={contentRef}>
@@ -238,6 +232,9 @@ export function Request({ showSucess, showError, showInfo, baseUrl }) {
                         <i className="pi pi-info-circle"></i> If the model has been
                         evaluated before, results appear instantly; otherwise, please wait
                         for the audit to finish.
+                    </Tip>
+                    <Tip>
+                        <i className="pi pi-info-circle"></i> Please ensure that the ASR model you are requesting for audit is available for use within the Hugging Face Transformers library.
                     </Tip>
                     {/* <Tip>
                         <i className="pi pi-info-circle"></i> If audit for a model is in progress then please wait for it to finish, 

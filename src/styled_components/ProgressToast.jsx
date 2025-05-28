@@ -21,7 +21,7 @@ export default function ProgressToast({baseUrl}) {
         interval = setInterval(async () => {
         try {
             const response = await axios.get(`${baseUrl}/status`);
-            console.log("Response:", response.data);
+            // console.log("Response:", response.data);
             setAuditProgress(Math.round(response.data["%_completed"]*100)/100) ; 
             setModel(response.data["model"]);
             setRunning(response.data["running"]);
@@ -43,7 +43,6 @@ export default function ProgressToast({baseUrl}) {
             isFirstRender.current = false; // Flip the flag after first run
             return; // ⛔ Skip confirm() on first render
         }
-        console.log( "Model:", model, "Running:", running);
         if(visible) confirm();
     }, [running]);
 

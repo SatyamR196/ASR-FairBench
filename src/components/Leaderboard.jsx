@@ -12,11 +12,11 @@ import { DataContext } from "../DataContext";
 import { ProgressSpinner } from 'primereact/progressspinner';
 import styled from 'styled-components';
 
-export function Leaderboard({baseUrl}) {
+export function Leaderboard({ baseUrl }) {
 
   const [products, setProducts] = useState(null);
   const dt = useRef(null);
-  const {sharedData, setSharedData} = useContext(DataContext);
+  const { sharedData, setSharedData } = useContext(DataContext);
 
 
   let data = [
@@ -24,35 +24,28 @@ export function Leaderboard({baseUrl}) {
     { Model: "OpenAi/whisper-mini", WER: 0.25, FS: 0.8, FS_G: 0.85, FS_L: 0.75, FS_SEG: 0.65, FS_E: 0.8 }
   ]
 
-  // const {baseUrl} = useContext(DataContext) ;
-  // console.log(baseUrl);
   useEffect(() => {
-    console.log("Outside if fxn",sharedData)
-    if(!(sharedData && sharedData.Leaderboard)){
-      console.log("inside if")
+    if (!(sharedData && sharedData.Leaderboard)) {
       const fetchData = async () => {
         const headers = {
           'ngrok-skip-browser-warning': "10008"
         };
         const res = await axios.get(`${baseUrl}/fetch`, { headers });
-        console.log(baseUrl);
         let Data = res.data.data; // Await the promise
         const uniqueData = Data.filter((value, index, self) =>
           index === self.findIndex((t) => t.Model === value.Model)
         );
-        console.log(uniqueData)
         setProducts(uniqueData); // Set the resolved data to state
-        setSharedData({...sharedData,Leaderboard: uniqueData})
-        console.log(sharedData)
+        setSharedData({ ...sharedData, Leaderboard: uniqueData })
       }
-      
+
       fetchData();
-    }else{
+    } else {
       setProducts(sharedData.Leaderboard);
     }
 
 
-  }, [sharedData,setSharedData,baseUrl]);
+  }, [sharedData, setSharedData, baseUrl]);
 
 
   const exportCSV = (selectionOnly) => {
@@ -112,6 +105,13 @@ export function Leaderboard({baseUrl}) {
       <Button type="button" icon="pi pi-file-pdf" severity="warning" rounded onClick={exportPdf} className="tooltip-btn" data-pr-tooltip="Export PDF" />
     </div>
   );
+  //! For making the model name hyperlinks
+  const [selectedCell, setSelectedCell] = useState(null);
+  const onCellClick = (event) => {
+    if(event.field!="Model") return ;
+    const url = `https://huggingface.co/${event.value}`; // Replace with your URL
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
 
   return (<>
     {/* <h1>Leaderboard</h1> */}
@@ -119,7 +119,14 @@ export function Leaderboard({baseUrl}) {
     <H3>Leaderboard of the ASR models audited on this platform :</H3>
     {products ? (<div className="card border-round-3xl overflow-hidden shadow-2">
       <Tooltip target=".export-buttons>button" position="bottom" />
-      <DataTable ref={dt} header={header} value={products} removableSort showGridlines sortField="FAAS" sortOrder={-1} tableStyle={{ minWidth: '20rem' }}>
+      <DataTable ref={dt} header={header} value={products} removableSort showGridlines 
+      sortField="FAAS" 
+      sortOrder={-1} 
+      tableStyle={{ minWidth: '20rem' }}
+      cellSelection selectionMode="single" selection={selectedCell}
+      onSelectionChange={(e) => setSelectedCell(e.value)} metaKeySelection={false}
+      onCellClick={onCellClick}
+      >
         <Column field="Model" header="Model Name" sortable filter></Column>
         <Column field="FAAS" header="Fairness Adjusted ASR Score" sortable></Column>
         <Column field="WER" header="Average WER" sortable></Column>
@@ -130,11 +137,11 @@ export function Leaderboard({baseUrl}) {
         <Column field="FS_SEG" header="Fairness Score (Socioeconomic Background)" sortable></Column>
         <Column field="FS_E" header="Fairness Score (Ethnicity)" sortable></Column>
       </DataTable>
-    </div>) 
-    : 
-    (<ProgressSpinner style={{width: '200px', height: '200px'}} strokeWidth="3"/>)} 
-    
-    
+    </div>)
+      :
+      (<ProgressSpinner style={{ width: '200px', height: '200px' }} strokeWidth="3" />)}
+
+
     <br></br>
   </>)
 }
