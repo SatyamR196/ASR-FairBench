@@ -18,12 +18,12 @@ import { Toast } from "primereact/toast";
 import { ScrollTop } from "primereact/scrolltop";
 import ScoreCard from "../styled_components/Scorecard";
 import { media } from "../Utils/helper";
+import StopAudit from "../styled_components/StopAudit";
 
 export function Request({ showSucess, showError, showInfo, baseUrl }) {
     let [result, setResult] = useState(false);
     let [isRunning, setIsRunning] = useState(false);
     let [category_FS, setCategory_FS] = useState([]);
-    // let [value, setValue] = useState("");
     let [auditProgress, setAuditProgress] = useState(0);
     const { sharedData, setSharedData } = useContext(DataContext);
     let [fetchProgress, setFetchProgress] = useState(false);
@@ -149,7 +149,7 @@ export function Request({ showSucess, showError, showInfo, baseUrl }) {
                     },
                 ],
             });
-            
+
         } catch (error) {
             console.error("Retrying due to error:", error.message);
         }
@@ -203,7 +203,8 @@ export function Request({ showSucess, showError, showInfo, baseUrl }) {
         "ngrok-skip-browser-warning": "10008",
     };
 
-    return (
+    return (<>
+        
         <Main>
             <PrintContainer ref={contentRef}>
                 <h2>Check ASR Model Fairness Score</h2>
@@ -310,17 +311,20 @@ export function Request({ showSucess, showError, showInfo, baseUrl }) {
                             </ExampleButton>
                         </ExampleModels>
                     </FormGroup>
-                    <Button
-                        type="submit"
-                        shadow="blue"
-                        bg="#3b82f6"
-                        color="white"
-                        disabled={isRunning}
-                    >
-                        Run Fairness Audit
-                    </Button>
+                    <BtnGroup>
+                        <Button
+                            type="submit"
+                            shadow="blue"
+                            bg="#3b82f6"
+                            color="white"
+                            disabled={isRunning}
+                        >
+                            Run Fairness Audit
+                        </Button>
+                        <StopAudit baseUrl={baseUrl} />
+                    </BtnGroup>
                 </form>
-
+                
                 {result.message && (
                     <h3 style={{ marginBottom: 0 }}>
                         <i>
@@ -500,6 +504,7 @@ export function Request({ showSucess, showError, showInfo, baseUrl }) {
                 )}
             </PrintContainer>
         </Main>
+    </>
     );
 }
 
@@ -507,17 +512,6 @@ const Main = styled.div`
   /* .p-progressbar-value {
     background-color: #3b82f6;
   } */
-   input {
-    margin-bottom: 0.5rem !important;
-    font-family: "Poppins", monospace;
-    width: 60%;
-    @media ${media.tablet} {
-        width: 80%;
-    }
-    @media ${media.mobile} {
-        width: 95%;
-    }
-   }
 `;
 
 const I = styled.i`
@@ -609,6 +603,17 @@ const ModelInputWrapper = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 0.5rem;
+  input {
+    margin-bottom: 0.5rem !important;
+    font-family: "Poppins", monospace;
+    width: 60%;
+    @media ${media.tablet} {
+        width: 80%;
+    }
+    @media ${media.mobile} {
+        width: 95%;
+    }
+   }
 `;
 
 const ModelPrefix = styled.div`

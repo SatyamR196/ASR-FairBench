@@ -26,10 +26,11 @@ import Dataset from "./components/Dataset";
 import Contact from "./components/Contact";
 import ProgressToast from "./styled_components/ProgressToast";
 import SpinnerIcon from "./styled_components/SpinnerIcon";
+import { Password } from 'primereact/password';
 
 function App() {
   const toast = useRef(null);
-  const [baseUrl, setBaseUrl] = useState("https://satyamr196-asr-fairbench-server.hf.space")
+  const [baseUrl, setBaseUrl] = useState("https://satyamr196-asr-fairbench-sever-v2.hf.space")
   // const [baseUrl,setBaseUrl] = useState("http://localhost:7860") 
   console.log(baseUrl);
   const location = useLocation();
@@ -44,7 +45,7 @@ function App() {
     toast.current.show({ severity: 'info', summary: 'Info', detail: 'Model already added to the Leaderboard 🫢' });
   };
   return (
-    <>
+    <>  
       <Wrapper>
         <Toast ref={toast} />
         <HeadImg>
@@ -113,8 +114,10 @@ const Text = styled.p`
 `
 
 const Wrapper = styled.div`
+  /* position: 'relative'; */
   /* background: linear-gradient(to right, #6dd5fa, #2980b9); */
   background-color: #ffffff;
+  /* background-color: #fa2020; */
   color: black;
   min-height: 100vh;
   display: flex;
@@ -129,8 +132,8 @@ const Wrapper = styled.div`
     margin: auto;
     /* margin-top: 3rem; */
     padding: 2rem;
-    /* background: rgb(255, 255, 255); */
     background: transparent;
+    /* background: rgb(255, 255, 255); */
     backdrop-filter: blur(12px);
     /* box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37); */
     border-radius: 20px;
@@ -175,34 +178,11 @@ const Wrapper = styled.div`
   }
   input {
     padding: 10px;
-    margin-bottom: 20px;
+    /* margin-bottom: 20px; */
     border: none;
     border-radius: 10px;
     /* width: 65%; */
     text-align: center;
-  }
-  #progressBarContainer {
-    width: 100%;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 10px;
-    margin: 20px auto;
-    overflow: hidden;
-    position: relative;
-  }
-  #progressBar {
-    width: 0%;
-    height: 10px;
-    background-color: #3b82f6;
-    border-radius: 10px;
-    transition: width 0.5s;
-  }
-  #progressPercent {
-    position: absolute;
-    width: 100%;
-    text-align: center;
-    line-height: 20px;
-    color: white;
-    font-weight: bold;
   }
 `;
 
